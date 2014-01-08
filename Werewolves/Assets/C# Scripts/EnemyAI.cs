@@ -13,8 +13,9 @@ public class EnemyAI : MonoBehaviour {
 		Idle,
 	};
 
-	public float walkspeed = 0.1f;
-	public float attackDelay = 2.5f;
+	public float walkspeed;
+	public float attackDelay;
+	private float untillastattack = 0f;
 	private GameObject targetPlayer;
 	private AIState state = new AIState();
 
@@ -26,7 +27,7 @@ public class EnemyAI : MonoBehaviour {
 
 	private void WalkTowards(GameObject entity)
 	{
-		this.transform.position = Vector3.MoveTowards (this.transform.position, entity.transform.position, walkspeed);
+		this.transform.position = Vector3.MoveTowards (this.transform.position, entity.transform.position, walkspeed * Time.deltaTime);
         // When we have a floor, I'll make it follow the floor. For now, the sky is the limit.
 
 
@@ -41,7 +42,7 @@ public class EnemyAI : MonoBehaviour {
 
 	private float GetDistanceFromEntity(GameObject entity)
 	{
-		return (this.transform.position - entity.transform.position).magnitude;
+		return Vector3.Distance (this.transform.position, entity.transform.position);
 	}
 
 	private void AttackEntity(GameObject entity)
@@ -51,17 +52,19 @@ public class EnemyAI : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        
+		untillastattack -= Time.deltaTime;
+
 		if (GetDistanceFromEntity(targetPlayer) < 1)
 		{
-            if (Time.deltaTime < attackDelay)
+            if (untillastattack <= 0)
+			{
             	AttackEntity(targetPlayer);
+				untillastattack = attackDelay;
+			}
 		}
 		else 
 		{
 			WalkTowards (targetPlayer);
 		}
-
-
 	}
 }
