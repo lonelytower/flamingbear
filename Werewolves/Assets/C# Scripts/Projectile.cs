@@ -16,8 +16,7 @@ public class Projectile : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Debug.Log(transform.rotation.eulerAngles.ToString());
-		this.transform.Translate(new Vector3(0,(transform.rotation.eulerAngles.z*velocity*Time.deltaTime),0));
+		this.transform.Translate(Vector3.up*velocity*Time.deltaTime);
 		lifetime=lifetime-Time.deltaTime;
 		if(lifetime<=0){
 			GameObject.DestroyImmediate(this.gameObject); //And play expire animation once we get it.

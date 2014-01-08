@@ -15,23 +15,24 @@ public class Movement : MonoBehaviour {
 	void Update () {
 		if(Input.GetAxis("Horizontal")<0){ //Left
 			//Need collision checking in here, pre check preferably but we need other things for that
-			this.transform.Translate(Vector3.left*speed);
+			this.transform.Translate(transform.InverseTransformDirection(new Vector3(-1,0,0)*speed));
 		}
 		else if(Input.GetAxis("Horizontal")>0){ //Right
-			this.transform.Translate(Vector3.right*speed);
+			this.transform.Translate(transform.InverseTransformDirection(new Vector3(1,0,0)*speed));
 		}
 		else {
 			
 		}
 		if(Input.GetAxis("Vertical")<0){ //Down
-			this.transform.Translate(Vector3.down*speed);
+			this.transform.Translate(transform.InverseTransformDirection(new Vector3(0,-1,0)*speed));
 		}
 		else if(Input.GetAxis("Vertical")>0){ //Up
-			this.transform.Translate(Vector3.up*speed);
+			this.transform.Translate(transform.InverseTransformDirection((new Vector3(0,1,0))*speed));
 		}
 		else {
 			
 		}
-		this.transform.LookAt(new Vector3(this.transform.position.x,this.transform.position.y,Input.mousePosition.x));
+		
+		this.transform.rotation = Quaternion.Euler(new Vector3(0,0,Mathf.Atan2(Input.mousePosition.y - Camera.main.WorldToScreenPoint(this.transform.position).y,Input.mousePosition.x - Camera.main.WorldToScreenPoint(this.transform.position).x)*Mathf.Rad2Deg-90));
 	}
 }

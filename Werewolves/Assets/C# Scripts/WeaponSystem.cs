@@ -7,6 +7,9 @@ public class WeaponSystem : MonoBehaviour {
 	int weaponSlot = 1; //2 slots right now, set to 1 for melee and 2 for ranged
 	bool melee = true; //Whether or not the equipped weapon is melee, will be inherited from the weapon itself later
 	GameObject equippedWeapon; //The weapon you have equipped, selected from the Resources/weapons folder after we make them all
+	float delay = 2; //all the inheritence!
+	float delayCount = 2; //So we can set it back to the initial delay
+	bool switchPressed = false;
 	// Use this for initialization
 	void Start () {
 	
@@ -14,31 +17,46 @@ public class WeaponSystem : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetAxis("Fire3")>0){ //Left shift and middle mouse button
+		if(Input.GetAxis("Fire3")>0&&switchPressed == false){ //Left shift and middle mouse button
+			switchPressed = true;
 			//Switch weapons
 			switch(weaponSlot){
 			case(1):
 				weaponSlot=2;
+				delay = 2;
+				this.renderer.material.color = Color.blue;
 				melee = false;
 				break;
 			case(2):
+				delay = 0.3f;
 				weaponSlot=1;
+				this.renderer.material.color = Color.red;
 				melee = true;
 				break;
 			default:
 				break;
 			}
 		}
+		if(Input.GetAxis("Fire3")<=0){
+			switchPressed = false;
+		}
 		if(Input.GetAxis("Fire1")>0){ //Left Control and left mouse button, remap latter
-			if(melee){
-				//Swing, thrust, bash, etc
-			} else {
-				//Fire projectile! Projecticle sprite inherited from weapon later
-				GameObject projectileObj;
-				projectileObj = GameObject.Instantiate(Resources.Load("Weapons/ProjectileBase"),Vector3.forward/2,this.transform.rotation) as GameObject;
-				projectileObj.GetComponent<Projectile>().velocity = 1; //Set it to the weapon value.
-				projectileObj.transform.rotation = new Quaternion(0,0,this.transform.rotation.z);
+			if(delayCount<=0){
+				delayCount = delay;
+				if(melee){
+					//Swing, thrust, bash, etc
+					GameObject projectileObj;
+					projectileObj = GameObject.Instantiate(Resources.Load("Weapons/ProjectileBase"),this.transform.position,this.transform.rotation) as GameObject;
+					projectileObj.GetComponent<Projectile>().velocity = 5; //Set it to the weapon value.
+					projectileObj.GetComponent<Projectile>().lifetime = 0.2f;
+				} else {
+					//Fire projectile! Projecticle sprite inherited from weapon later
+					GameObject projectileObj;
+					projectileObj = GameObject.Instantiate(Resources.Load("Weapons/ProjectileBase"),this.transform.position,this.transform.rotation) as GameObject;
+					projectileObj.GetComponent<Projectile>().velocity = 100; //Set it to the weapon value.
+				}
 			}
 		}
+		delayCount-=Time.deltaTime;
 	}
 }
