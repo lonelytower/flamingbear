@@ -1,0 +1,17 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\C# Scripts\WeaponSystem.cs">
+    <Files>
+      <File FileName="Assets\C# Scripts\Projectile.cs" Line="1" Column="1" />
+      <File FileName="Assets\C# Scripts\CameraFollow.cs" Line="1" Column="1" />
+      <File FileName="Assets\C# Scripts\EnemyAI.cs" Line="1" Column="1" />
+      <File FileName="Assets\C# Scripts\Stats.cs" Line="25" Column="34" />
+      <File FileName="Assets\C# Scripts\Projectile.cs" Line="10" Column="12" />
+      <File FileName="Assets\C# Scripts\WeaponSystem.cs" Line="36" Column="18" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
