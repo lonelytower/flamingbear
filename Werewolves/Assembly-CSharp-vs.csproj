@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\C# Scripts\CameraFollow.cs" />
      <Compile Include="Assets\C# Scripts\EnemyAI.cs" />
+     <Compile Include="Assets\C# Scripts\Manager.cs" />
      <Compile Include="Assets\C# Scripts\Movement.cs" />
      <Compile Include="Assets\C# Scripts\Projectile.cs" />
      <Compile Include="Assets\C# Scripts\Stats.cs" />

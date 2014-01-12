@@ -20,7 +20,7 @@ public class Movement : MonoBehaviour {
 				this.GetComponent<Animator>().Play("WalkLeft");
 				direction = 3;
 			} 
-			else if((Input.GetKey(KeyCode.A)||Input.GetKey(KeyCode.LeftArrow))&&Input.GetKey(KeyCode.W)||Input.GetKey(KeyCode.UpArrow)){
+			else if( (Input.GetKey(KeyCode.A)||Input.GetKey(KeyCode.LeftArrow)) && (Input.GetKey(KeyCode.W)||Input.GetKey(KeyCode.UpArrow)) ){
 				this.transform.Translate(transform.InverseTransformDirection(new Vector3(-1,1,0)*speed));
 				this.GetComponent<Animator>().Play("WalkLeft");
 				direction = 3;
@@ -30,7 +30,7 @@ public class Movement : MonoBehaviour {
 				this.GetComponent<Animator>().Play("WalkRight");
 				direction = 4;
 			} 
-			else if((Input.GetKey(KeyCode.D)||Input.GetKey(KeyCode.RightArrow))&&Input.GetKey(KeyCode.W)||Input.GetKey(KeyCode.UpArrow)){
+			else if((Input.GetKey(KeyCode.D)||Input.GetKey(KeyCode.RightArrow))&&(Input.GetKey(KeyCode.W)||Input.GetKey(KeyCode.UpArrow))){
 				this.transform.Translate(transform.InverseTransformDirection(new Vector3(1,1,0)*speed));
 				this.GetComponent<Animator>().Play("WalkRight");
 				direction = 4;
