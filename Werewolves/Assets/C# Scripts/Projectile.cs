@@ -7,7 +7,8 @@ public class Projectile : MonoBehaviour {
 	//Inherited from weapon upon initialization
 	public float velocity;
 	public float lifetime;
-	public int damage; 
+	public int damage;
+	public bool ally = true;
 
 	// Use this for initialization
 	void Start () {

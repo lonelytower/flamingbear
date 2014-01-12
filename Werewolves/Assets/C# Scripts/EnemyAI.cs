@@ -13,6 +13,7 @@ public class EnemyAI : MonoBehaviour {
 		Idle,
 	};
 
+	public bool moveable = true;
 	public float walkspeed;
 	public float attackDelay;
 	private float untillastattack = 0f;
@@ -27,7 +28,34 @@ public class EnemyAI : MonoBehaviour {
 
 	private void WalkTowards(GameObject entity)
 	{
-		this.transform.position = Vector3.MoveTowards (this.transform.position, entity.transform.position, walkspeed * Time.deltaTime);
+		if(moveable){
+			Vector3 direction = new Vector3(0,0,0);
+			direction = entity.transform.position - this.transform.position;
+			if(Mathf.Abs(direction.x)>Mathf.Abs(direction.y)){
+				switch(direction.x>0){
+				case(true):
+					this.GetComponent<Animator>().Play("WalkRight");
+					break;
+				case(false):
+					this.GetComponent<Animator>().Play("WalkLeft");
+					break;
+				default:
+					break;
+				}
+			} else {
+				switch(direction.y>0){
+				case(true):
+					this.GetComponent<Animator>().Play("WalkUp");
+					break;
+				case(false):
+					this.GetComponent<Animator>().Play("WalkDown");
+					break;
+				default:
+					break;
+				}
+			}
+			this.transform.position = Vector3.MoveTowards (this.transform.position, entity.transform.position, walkspeed * Time.deltaTime);
+		}
         // When we have a floor, I'll make it follow the floor. For now, the sky is the limit.
 
 
@@ -45,20 +73,57 @@ public class EnemyAI : MonoBehaviour {
 		return Vector3.Distance (this.transform.position, entity.transform.position);
 	}
 
-	private void AttackEntity(GameObject entity)
+	IEnumerator AttackEntity(GameObject entity, float delay)
 	{
-        entity.GetComponent<Stats>().health -= this.GetComponent<Stats>().damage;
+		int direction = 0; //1 = up 2 = down 3 = left 4 = right
+		AnimatorStateInfo currentAnim;
+		currentAnim = this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0);
+		if(currentAnim.IsName("WalkUp") == true){
+			direction = 1;
+			this.GetComponent<Animator>().Play("AttackUp");
+		} else if (currentAnim.IsName("WalkDown") == true){
+			direction = 2;
+			this.GetComponent<Animator>().Play("AttackDown");
+			
+		} else if (currentAnim.IsName("WalkLeft") == true){
+			direction = 3;
+			this.GetComponent<Animator>().Play("AttackLeft");
+			
+		} else if (currentAnim.IsName("WalkRight") == true){
+			direction = 4;
+			this.GetComponent<Animator>().Play("AttackRight");
+		}
+		moveable = false;
+		yield return new WaitForSeconds(delay);
+		moveable = true;
+		switch(direction){
+		case(1):
+			this.GetComponent<Animator>().Play("WalkUp");
+			break;
+		case(2):
+			this.GetComponent<Animator>().Play("WalkDown");
+			break;
+		case(3):
+			this.GetComponent<Animator>().Play("WalkLeft");
+			break;
+		case(4):
+			this.GetComponent<Animator>().Play("WalkRight");
+			break;
+		default:
+			break;
+		}
+		entity.GetComponent<Stats>().health -= this.GetComponent<Stats>().damage;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		untillastattack -= Time.deltaTime;
 
-		if (GetDistanceFromEntity(targetPlayer) < 1)
+		if (GetDistanceFromEntity(targetPlayer) < 0.3f)
 		{
             if (untillastattack <= 0)
 			{
-            	AttackEntity(targetPlayer);
+				StartCoroutine(AttackEntity(targetPlayer,this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length));
 				untillastattack = attackDelay;
 			}
 		}

@@ -7,7 +7,7 @@ public class WeaponSystem : MonoBehaviour {
 	int weaponSlot = 1; //2 slots right now, set to 1 for melee and 2 for ranged
 	bool melee = true; //Whether or not the equipped weapon is melee, will be inherited from the weapon itself later
 	GameObject equippedWeapon; //The weapon you have equipped, selected from the Resources/weapons folder after we make them all
-	float delay = 2; //all the inheritence!
+	float delay = 1; //all the inheritence!
 	float delayCount = 2; //So we can set it back to the initial delay
 	bool switchPressed = false;
 	// Use this for initialization
@@ -25,14 +25,14 @@ public class WeaponSystem : MonoBehaviour {
 				Debug.Log("Ranged");
 				weaponSlot=2;
 				delay = 2;
-				//this.renderer.material.color = Color.blue;
+				this.renderer.material.color = Color.grey;
 				melee = false;
 				break;
 			case(2):
 				Debug.Log("Melee");
-				delay = 0.3f;
+				delay = 1f;
 				weaponSlot=1;
-				//this.renderer.material.color = Color.red;
+				this.renderer.material.color = Color.white;
 				melee = true;
 				break;
 			default:
@@ -46,12 +46,31 @@ public class WeaponSystem : MonoBehaviour {
 			if(delayCount<=0){
 				delayCount = delay;
 				if(melee){
+					StartCoroutine(launchMeleeAttack(this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length));
 					//Swing, thrust, bash, etc
 					GameObject projectileObj;
-					projectileObj = GameObject.Instantiate(Resources.Load("Weapons/ProjectileBase"),this.transform.position,this.transform.rotation) as GameObject;
-					projectileObj.GetComponent<Projectile>().velocity = 5; //Set it to the weapon value.
-					projectileObj.GetComponent<Projectile>().damage = 5;
-					projectileObj.GetComponent<Projectile>().lifetime = 0.1f;
+					
+					switch(this.GetComponent<Movement>().direction){
+					case(1):
+						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/SwordSwipe"),this.transform.position+(new Vector3(0,0.3f,0)),this.transform.rotation) as GameObject;
+						break;
+					case(2):
+						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/SwordSwipe"),this.transform.position+(new Vector3(0,-0.3f,0)),this.transform.rotation) as GameObject;
+						break;
+					case(3):
+						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/SwordSwipe"),this.transform.position+(new Vector3(-0.3f,0,0)),this.transform.rotation) as GameObject;
+						projectileObj.transform.Rotate(new Vector3(0,0,90));
+						break;
+					case(4):
+						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/SwordSwipe"),this.transform.position+(new Vector3(0.3f,0,0)),this.transform.rotation) as GameObject;
+						projectileObj.transform.Rotate(new Vector3(0,0,90));
+						break;
+					default:
+						break;
+					}
+				//	projectileObj.GetComponent<Projectile>().velocity = 5; //Set it to the weapon value.
+				//	projectileObj.GetComponent<Projectile>().damage = 5;
+				//	projectileObj.GetComponent<Projectile>().lifetime = 0.1f;
 				} else {
 					//Fire projectile! Projecticle sprite inherited from weapon later
 					GameObject projectileObj;
@@ -62,5 +81,45 @@ public class WeaponSystem : MonoBehaviour {
 			}
 		}
 		delayCount-=Time.deltaTime;
+	}
+	IEnumerator launchMeleeAttack(float delay){
+		int direction = 0; //1 = up 2 = down 3 = left 4 = right
+		AnimatorStateInfo currentAnim;
+		currentAnim = this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0);
+		if(currentAnim.IsName("WalkUp") == true){
+			direction = 1;
+			this.GetComponent<Animator>().Play("AttackUp");
+		} else if (currentAnim.IsName("WalkDown") == true){
+			direction = 2;
+			this.GetComponent<Animator>().Play("AttackDown");
+
+		} else if (currentAnim.IsName("WalkLeft") == true){
+			direction = 3;
+			this.GetComponent<Animator>().Play("AttackLeft");
+
+		} else if (currentAnim.IsName("WalkRight") == true){
+			direction = 4;
+			this.GetComponent<Animator>().Play("AttackRight");
+
+		}
+		this.GetComponent<Movement>().moveable = false;
+		yield return new WaitForSeconds(delay);
+		switch(direction){
+		case(1):
+			this.GetComponent<Animator>().Play("WalkUp");
+			break;
+		case(2):
+			this.GetComponent<Animator>().Play("WalkDown");
+			break;
+		case(3):
+			this.GetComponent<Animator>().Play("WalkLeft");
+			break;
+		case(4):
+			this.GetComponent<Animator>().Play("WalkRight");
+			break;
+		default:
+			break;
+		}
+		this.GetComponent<Movement>().moveable = true;
 	}
 }

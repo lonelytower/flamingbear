@@ -14,15 +14,26 @@ public class Stats : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(health<=0){
-			Debug.Log("Owie");
+			DestroyImmediate(this.gameObject);
 		}
 	
 	}
 
 	void OnCollisionEnter2D(Collision2D collision) {
-		if(collision.gameObject.tag=="Projectile"){
-			health -= collision.gameObject.GetComponent<Projectile>().damage;
-			Destroy(collision.gameObject);
+		if(tag == "Enemy"){
+			if(collision.gameObject.tag=="Projectile"){
+				if(collision.gameObject.GetComponent<Projectile>().ally = true){
+					health -= collision.gameObject.GetComponent<Projectile>().damage;
+					Destroy(collision.gameObject);
+				}
+			}
+		} else if(tag == "Player"){
+			if(collision.gameObject.tag=="Projectile"){
+				if(collision.gameObject.GetComponent<Projectile>().ally = false){
+					health -= collision.gameObject.GetComponent<Projectile>().damage;
+					Destroy(collision.gameObject);
+				}
+			}
 		}
 	}
 }
