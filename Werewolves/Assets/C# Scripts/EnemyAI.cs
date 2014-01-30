@@ -16,9 +16,10 @@ public class EnemyAI : MonoBehaviour {
 	public bool moveable = true;
 	public float walkspeed;
 	public float attackDelay;
-	private float untillastattack = 0f;
+	private float untilLastAttack = 0f;
 	private GameObject targetPlayer;
 	private AIState state = new AIState();
+
 
 	// Use this for initialization
 	void Start () {
@@ -55,6 +56,7 @@ public class EnemyAI : MonoBehaviour {
 				}
 			}
 			this.transform.position = Vector3.MoveTowards (this.transform.position, entity.transform.position, walkspeed * Time.deltaTime);
+			//this.rigidbody2D.velocity = new Vector3(direction.x,direction.y,direction.z);
 		}
         // When we have a floor, I'll make it follow the floor. For now, the sky is the limit.
 
@@ -94,6 +96,7 @@ public class EnemyAI : MonoBehaviour {
 			this.GetComponent<Animator>().Play("AttackRight");
 		}
 		moveable = false;
+		entity.GetComponent<Stats>().health -= this.GetComponent<Stats>().damage;
 		yield return new WaitForSeconds(delay);
 		moveable = true;
 		switch(direction){
@@ -112,24 +115,26 @@ public class EnemyAI : MonoBehaviour {
 		default:
 			break;
 		}
-		entity.GetComponent<Stats>().health -= this.GetComponent<Stats>().damage;
 	}
-	
 	// Update is called once per frame
 	void Update () {
-		untillastattack -= Time.deltaTime;
+		untilLastAttack -= Time.deltaTime;
 
 		if (GetDistanceFromEntity(targetPlayer) < 0.3f)
 		{
-            if (untillastattack <= 0)
+            if (untilLastAttack <= 0)
 			{
 				StartCoroutine(AttackEntity(targetPlayer,this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length));
-				untillastattack = attackDelay;
+				untilLastAttack = attackDelay;
 			}
 		}
 		else 
 		{
 			WalkTowards (targetPlayer);
 		}
+	}
+
+	public void setTarget(GameObject newTarget){
+		targetPlayer = newTarget;
 	}
 }

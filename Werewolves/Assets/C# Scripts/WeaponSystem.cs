@@ -72,11 +72,38 @@ public class WeaponSystem : MonoBehaviour {
 				//	projectileObj.GetComponent<Projectile>().damage = 5;
 				//	projectileObj.GetComponent<Projectile>().lifetime = 0.1f;
 				} else {
+					this.GetComponentInChildren<Detection>().increaseRadius(5);
 					//Fire projectile! Projecticle sprite inherited from weapon later
 					GameObject projectileObj;
-					projectileObj = GameObject.Instantiate(Resources.Load("Weapons/ProjectileBase"),this.transform.position+Vector3.up,this.transform.rotation) as GameObject;
-					projectileObj.GetComponent<Projectile>().velocity = 10f; //Set it to the weapon value.
-					projectileObj.GetComponent<Projectile>().damage = 5;
+					switch(this.GetComponent<Movement>().direction){
+					case(1):
+						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/ProjectileBase"),this.transform.position+(new Vector3(0,0.3f,0)),this.transform.rotation) as GameObject;
+						projectileObj.GetComponent<Projectile>().lifetime = 10;
+						projectileObj.GetComponent<Projectile>().direction=this.GetComponent<Movement>().direction;
+						projectileObj.transform.Rotate(new Vector3(0,0,90));
+						break;
+					case(2):
+						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/ProjectileBase"),this.transform.position+(new Vector3(0,-0.3f,0)),this.transform.rotation) as GameObject;
+						projectileObj.GetComponent<Projectile>().lifetime = 10;
+						projectileObj.GetComponent<Projectile>().direction=this.GetComponent<Movement>().direction;
+						projectileObj.transform.Rotate(new Vector3(0,0,-90));
+						break;
+					case(3):
+						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/ProjectileBase"),this.transform.position+(new Vector3(-0.3f,0,0)),this.transform.rotation) as GameObject;
+						projectileObj.GetComponent<Projectile>().lifetime = 10;
+						projectileObj.GetComponent<Projectile>().direction=this.GetComponent<Movement>().direction;
+						break;
+					case(4):
+						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/ProjectileBase"),this.transform.position+(new Vector3(0.3f,0,0)),this.transform.rotation) as GameObject;
+						projectileObj.GetComponent<Projectile>().lifetime = 10;
+						projectileObj.GetComponent<Projectile>().direction=this.GetComponent<Movement>().direction;
+						break;
+					default:
+						break;
+					}
+					//projectileObj = GameObject.Instantiate(Resources.Load("Weapons/ProjectileBase"),this.transform.position+Vector3.up,this.transform.rotation) as GameObject;
+					//projectileObj.GetComponent<Projectile>().velocity = 10f; //Set it to the weapon value.
+					//projectileObj.GetComponent<Projectile>().damage = 5;
 				}
 			}
 		}

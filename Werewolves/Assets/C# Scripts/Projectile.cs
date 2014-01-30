@@ -9,6 +9,7 @@ public class Projectile : MonoBehaviour {
 	public float lifetime;
 	public int damage;
 	public bool ally = true;
+	public int direction = 0; //1 = up 2 = down 3 = left 4 = right Inherit from character direction
 
 	// Use this for initialization
 	void Start () {
@@ -17,7 +18,23 @@ public class Projectile : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		this.transform.Translate(Vector3.up*velocity*Time.deltaTime);
+		switch(direction){
+		case(1):
+			this.rigidbody2D.velocity = new Vector2(0,velocity);
+			break;
+		case(2):
+			this.rigidbody2D.velocity = new Vector2(0,-velocity);
+			break;
+		case(3):
+			this.rigidbody2D.velocity = new Vector2(-velocity,0);
+			break;
+		case(4):
+			this.rigidbody2D.velocity = new Vector2(velocity,0);
+			break;
+		default:
+			break;
+		}
+		//this.transform.Translate(Vector3.forward*velocity*Time.deltaTime);
 		lifetime=lifetime-Time.deltaTime;
 		if(lifetime<=0){
 			GameObject.DestroyImmediate(this.gameObject); //And play expire animation once we get it.
