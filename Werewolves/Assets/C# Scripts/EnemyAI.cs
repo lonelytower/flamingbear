@@ -20,6 +20,7 @@ public class EnemyAI : MonoBehaviour {
 	private GameObject targetPlayer;
 	private AIState state = new AIState();
 
+	float AttackRange = 0.6f;
 
 	// Use this for initialization
 	void Start () {
@@ -97,6 +98,9 @@ public class EnemyAI : MonoBehaviour {
 		}
 		moveable = false;
 		entity.GetComponent<Stats>().health -= this.GetComponent<Stats>().damage;
+		if (entity.GetComponent<Movement> () != null) {
+						entity.GetComponent<Movement> ().TakeDamage (this.transform.position);
+				}
 		yield return new WaitForSeconds(delay);
 		moveable = true;
 		switch(direction){
@@ -120,7 +124,7 @@ public class EnemyAI : MonoBehaviour {
 	void Update () {
 		untilLastAttack -= Time.deltaTime;
 
-		if (GetDistanceFromEntity(targetPlayer) < 0.3f)
+		if (GetDistanceFromEntity(targetPlayer) < AttackRange)
 		{
             if (untilLastAttack <= 0)
 			{

@@ -31,6 +31,7 @@ public class Stats : MonoBehaviour {
 			if(collision.gameObject.tag=="Projectile"){
 				if(collision.gameObject.GetComponent<Projectile>().ally == false){
 					health -= collision.gameObject.GetComponent<Projectile>().damage;
+					this.GetComponent<Movement>().TakeDamage (collision.gameObject.transform.position);
 					Destroy(collision.gameObject);
 				}
 			}

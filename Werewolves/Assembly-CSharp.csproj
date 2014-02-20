@@ -46,13 +46,17 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Breakable.cs" />
      <Compile Include="Assets\C# Scripts\CameraFollow.cs" />
+     <Compile Include="Assets\C# Scripts\Detection.cs" />
      <Compile Include="Assets\C# Scripts\EnemyAI.cs" />
+     <Compile Include="Assets\C# Scripts\LayerHide.cs" />
      <Compile Include="Assets\C# Scripts\Manager.cs" />
      <Compile Include="Assets\C# Scripts\Movement.cs" />
      <Compile Include="Assets\C# Scripts\Projectile.cs" />
      <Compile Include="Assets\C# Scripts\Stats.cs" />
      <Compile Include="Assets\C# Scripts\WeaponSystem.cs" />
+     <Compile Include="Assets\HealthDisplay.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
