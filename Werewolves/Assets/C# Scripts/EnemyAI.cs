@@ -73,7 +73,10 @@ public class EnemyAI : MonoBehaviour {
 
 	private float GetDistanceFromEntity(GameObject entity)
 	{
-		return Vector3.Distance (this.transform.position, entity.transform.position);
+		if(entity!=null){
+			return Vector3.Distance (this.transform.position, entity.transform.position);
+		}
+		return 0.0f;
 	}
 
 	IEnumerator AttackEntity(GameObject entity, float delay)

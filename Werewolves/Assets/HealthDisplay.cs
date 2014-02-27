@@ -22,7 +22,9 @@ public class HealthDisplay : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
-		playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<Stats>().health;
+		if(GameObject.FindGameObjectWithTag("Player")!=null){
+			playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<Stats>().health;
+		}
 		if(playerHealth>88){
 			Heart1.GetComponent<SpriteRenderer>().sprite = HeartMax;
 		} else if(playerHealth>77){
