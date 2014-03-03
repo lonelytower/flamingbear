@@ -20,7 +20,7 @@ public class EnemyAI : MonoBehaviour {
 	private GameObject targetPlayer;
 	private AIState state = new AIState();
 
-	float AttackRange = 0.6f;
+	float AttackRange = 0.8f;
 
 	// Use this for initialization
 	void Start () {
@@ -56,7 +56,9 @@ public class EnemyAI : MonoBehaviour {
 					break;
 				}
 			}
-			this.transform.position = Vector3.MoveTowards (this.transform.position, entity.transform.position, walkspeed * Time.deltaTime);
+			if(Vector3.Distance(this.transform.position,entity.transform.position)>AttackRange){
+				this.transform.position = Vector3.MoveTowards (this.transform.position, entity.transform.position, walkspeed * Time.deltaTime);
+			}
 			//this.rigidbody2D.velocity = new Vector3(direction.x,direction.y,direction.z);
 		}
         // When we have a floor, I'll make it follow the floor. For now, the sky is the limit.
