@@ -54,6 +54,7 @@
      <Compile Include="Assets\C# Scripts\Manager.cs" />
      <Compile Include="Assets\C# Scripts\Movement.cs" />
      <Compile Include="Assets\C# Scripts\Projectile.cs" />
+     <Compile Include="Assets\C# Scripts\SnapToGrid.cs" />
      <Compile Include="Assets\C# Scripts\Stats.cs" />
      <Compile Include="Assets\C# Scripts\WeaponSystem.cs" />
      <Compile Include="Assets\HealthDisplay.cs" />
