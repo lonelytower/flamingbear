@@ -13,7 +13,7 @@ public class Movement : MonoBehaviour {
 
 	float stunTime = 0;
 
-	const float TIME_TO_STUN = 0.5f;
+	const float TIME_TO_STUN = 0.2f;
 
 	Vector2 hitDirection = new Vector2(float.NaN, float.NaN);
 
@@ -28,7 +28,7 @@ public class Movement : MonoBehaviour {
 		Vector2 damageTaker = this.transform.position;
 		hitDirection = damageTaker - sourceposition;
 		hitDirection.Normalize();
-		hitDirection *= 250;
+		hitDirection *= 500;
 		stunTime = TIME_TO_STUN;
 	}
 
