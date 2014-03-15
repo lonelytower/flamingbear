@@ -7,7 +7,7 @@ public class WeaponSystem : MonoBehaviour {
 	int weaponSlot = 1; //2 slots right now, set to 1 for melee and 2 for ranged
 	bool melee = true; //Whether or not the equipped weapon is melee, will be inherited from the weapon itself later
 	GameObject equippedWeapon; //The weapon you have equipped, selected from the Resources/weapons folder after we make them all
-	float delay = 1; //all the inheritence!
+	public float delay = 1; //all the inheritence!
 	float delayCount = 2; //So we can set it back to the initial delay
 	bool switchPressed = false;
 	// Use this for initialization
