@@ -14,7 +14,11 @@ public class Stats : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(health<=0){
+			if(this.tag == "Player"){
+				Application.LoadLevel("InitialTestScene");
+			}
 			DestroyImmediate(this.gameObject);
+
 		}
 	
 	}
