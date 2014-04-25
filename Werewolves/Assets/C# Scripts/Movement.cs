@@ -37,29 +37,31 @@ public class Movement : MonoBehaviour {
 	void Update () {
 		mouseX =  Input.mousePosition.x/Screen.width;
 		mouseY =  Input.mousePosition.y/Screen.height;
-		if(mouseX+mouseY >= 1&&mouseX>mouseY&&mouseX>0.5f){
-			if(this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("WalkRight")==false&&this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("AttackRight")==false){
-				this.GetComponent<Animator> ().Play ("WalkRight");
-			}
-			direction = 4;
-		} 
-		if(mouseX+mouseY<1&&mouseX<mouseY&&mouseX<0.5f) {
-			direction = 3;
-			if(this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("WalkLeft")==false&&this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("AttackLeft")==false){
-				this.GetComponent<Animator> ().Play ("WalkLeft");
-			}
-		}
-		if(mouseX+mouseY>=1&&mouseY>mouseX&&mouseY>0.5f){
-			direction = 1;
-			if(this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("WalkUp")==false&&this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("AttackUp")==false){
-				this.GetComponent<Animator> ().Play ("WalkUp");
-			}
-		}
-		if(mouseX+mouseY<1&&mouseY<mouseX&&mouseY<0.5f){
-			direction = 2;
-			if(this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("WalkDown")==false&&this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("AttackDown")==false){
-					this.GetComponent<Animator> ().Play ("WalkDown");
+		if(Input.GetAxis("Fire1")>0){
+			if(mouseX+mouseY >= 1&&mouseX>mouseY&&mouseX>0.5f){
+				direction = 4;
+				if(this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("WalkRight")==false&&this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("AttackRight")==false){
+					this.GetComponent<Animator> ().Play ("AttackRight");
 				}
+			} 
+			if(mouseX+mouseY<1&&mouseX<mouseY&&mouseX<0.5f) {
+				direction = 3;
+				if(this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("WalkLeft")==false&&this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("AttackLeft")==false){
+					this.GetComponent<Animator> ().Play ("AttackLeft");
+				}
+			}
+			if(mouseX+mouseY>=1&&mouseY>mouseX&&mouseY>0.5f){
+				direction = 1;
+				if(this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("WalkUp")==false&&this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("AttackUp")==false){
+					this.GetComponent<Animator> ().Play ("AttackUp");
+				}
+			}
+			if(mouseX+mouseY<1&&mouseY<mouseX&&mouseY<0.5f){
+				direction = 2;
+				if(this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("WalkDown")==false&&this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("AttackDown")==false){
+						this.GetComponent<Animator> ().Play ("AttackDown");
+					}
+			}
 		}
 //		if(this.tag=="Player"){
 //			this.transform.LookAt(Input.mousePosition);
@@ -77,7 +79,7 @@ public class Movement : MonoBehaviour {
 										delay -= Time.deltaTime;
 								}
 								//direction = 4;
-								//this.GetComponent<Animator> ().Play ("WalkRight");
+								this.GetComponent<Animator> ().Play ("WalkRight");
 						} else if (hori == -1 && (vert != 1 && vert != -1)) {
 								if (delay <= 0) {
 										rigidbody2D.AddForce (new Vector2 (-speed, 0));
@@ -85,7 +87,7 @@ public class Movement : MonoBehaviour {
 										delay -= Time.deltaTime;
 								}
 								//direction = 3;
-								//this.GetComponent<Animator> ().Play ("WalkLeft");
+								this.GetComponent<Animator> ().Play ("WalkLeft");
 						} else if (hori == 1 && vert == 1) {
 								if (delay <= 0) {
 										rigidbody2D.AddForce (new Vector2 (speed / 2, speed / 2));
@@ -93,7 +95,7 @@ public class Movement : MonoBehaviour {
 										delay -= Time.deltaTime;
 								}
 								//direction = 4;
-								//this.GetComponent<Animator> ().Play ("WalkRight");
+								this.GetComponent<Animator> ().Play ("WalkRight");
 						} else if (hori == 1 && vert == -1) {
 								if (delay <= 0) {
 										rigidbody2D.AddForce (new Vector2 (speed / 2, -speed / 2));
@@ -101,7 +103,7 @@ public class Movement : MonoBehaviour {
 										delay -= Time.deltaTime;
 								}
 								//direction = 4;
-								//this.GetComponent<Animator> ().Play ("WalkRight");
+								this.GetComponent<Animator> ().Play ("WalkRight");
 						} else if (hori == -1 && vert == 1) {
 								if (delay <= 0) {
 										rigidbody2D.AddForce (new Vector2 (-speed / 2, speed / 2));
@@ -109,7 +111,7 @@ public class Movement : MonoBehaviour {
 										delay -= Time.deltaTime;
 								}
 								//direction = 3;
-								//this.GetComponent<Animator> ().Play ("WalkLeft");
+								this.GetComponent<Animator> ().Play ("WalkLeft");
 						} else if (hori == -1 && vert == -1) {
 								if (delay <= 0) {
 										rigidbody2D.AddForce (new Vector2 (-speed / 2, -speed / 2));
@@ -117,7 +119,7 @@ public class Movement : MonoBehaviour {
 										delay -= Time.deltaTime;
 								}
 								//direction = 3;
-							//	this.GetComponent<Animator> ().Play ("WalkLeft");
+								this.GetComponent<Animator> ().Play ("WalkLeft");
 						} else if (vert == 1 && (hori != 1 && hori != -1)) {
 								if (delay <= 0) {
 										rigidbody2D.AddForce (new Vector2 (0, speed));
@@ -125,7 +127,7 @@ public class Movement : MonoBehaviour {
 										delay -= Time.deltaTime;
 								}
 								//direction = 1;
-								//this.GetComponent<Animator> ().Play ("WalkUp");
+								this.GetComponent<Animator> ().Play ("WalkUp");
 						} else if (vert == -1 && (hori != 1 && hori != -1)) {
 								if (delay <= 0) {
 					
@@ -134,7 +136,7 @@ public class Movement : MonoBehaviour {
 										delay -= Time.deltaTime;
 								}
 							//	direction = 2;
-								//this.GetComponent<Animator> ().Play ("WalkDown");
+								this.GetComponent<Animator> ().Play ("WalkDown");
 						}
 			} else {
 			// if we aren't moveable

@@ -16,20 +16,5 @@ public class UI : MonoBehaviour {
 	}
 
 	void OnGUI (){
-		WeaponWindow = GUILayout.Window(0,WeaponWindow,UIWeaponSystem,"");
-		ItemWindow = GUILayout.Window(1,ItemWindow,UIItemSystem,"");
-	}
-	void UIWeaponSystem(int id){
-		GUILayout.BeginHorizontal();
-		GUILayout.Button("Left Weapon");
-		GUILayout.Button("Right Weapon");
-		GUILayout.EndHorizontal();
-	}
-	void UIItemSystem(int id){
-		GUILayout.BeginHorizontal();
-		GUILayout.Button("Previous Item");
-		GUILayout.Button("Current Item");
-		GUILayout.Button("Next Item");
-		GUILayout.EndHorizontal();
 	}
 }
