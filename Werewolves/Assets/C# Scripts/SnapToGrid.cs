@@ -4,7 +4,7 @@ using System.Collections;
 [ExecuteInEditMode]
 public class SnapToGrid : MonoBehaviour {
 
-	float snapDistance = 1;
+	public float snapDistance = 3f;
 
 	// Use this for initialization
 	void Start () {
