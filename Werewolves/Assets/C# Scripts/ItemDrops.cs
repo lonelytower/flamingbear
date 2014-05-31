@@ -14,14 +14,14 @@ public class ItemDrops : MonoBehaviour {
 		breakingScript = this.GetComponent<Breakable>();
 		dropTable.Add("Nothing");
 		switch(id){
-		case(1):
+		case(0):
 			dropTable.Add("Trap");
 			dropTable.Add("Wolfsbane");
 			dropTablePct.Add(30);
 			dropTablePct.Add(30);
 			dropTablePct.Add(40);
 			break;
-		case(2):
+		case(1):
 			dropTable.Add("Knife");
 			dropTable.Add("Sword");
 			dropTable.Add("Revolver");
@@ -36,7 +36,7 @@ public class ItemDrops : MonoBehaviour {
 			dropTablePct.Add(5);
 			dropTablePct.Add(5);
 			break;
-		case(3):
+		case(2):
 			break;
 		default:
 			break;
@@ -46,22 +46,30 @@ public class ItemDrops : MonoBehaviour {
 	}
 
 	public void triggerDrop(){
-		float value = Random.Range(0,100);
-		Debug.Log(value.ToString());
-		switch(id){
-		case(0):
-			if(value>=30&&value<=60){
-				Debug.Log("Fire");
-				GameObject.Instantiate(Resources.Load("Items/Trap"),this.transform.position,this.transform.rotation);
+
+		for(int i = 1; i < dropTable.Count; i++){
+			float value = Random.Range(0,100);
+			Debug.Log(value.ToString());
+			if(value > (100-dropTablePct[i])){
+				GameObject.Instantiate(Resources.Load("Items/"+ dropTable[i]),this.transform.position,this.transform.rotation);
 			}
-			if(value>60){
-				GameObject.Instantiate(Resources.Load("Items/Wolfsbane"),this.transform.position,this.transform.rotation);
-			}
-			break;
-		default:
-			Debug.Log("Default");
-			break;
 		}
+//		float value = Random.Range(0,100);
+//		Debug.Log(value.ToString());
+//		switch(id){
+//		case(0):
+//			if(value>=30&&value<=60){
+//				Debug.Log("Fire");
+//				GameObject.Instantiate(Resources.Load("Items/Trap"),this.transform.position,this.transform.rotation);
+//			}
+//			if(value>60){
+//				GameObject.Instantiate(Resources.Load("Items/Wolfsbane"),this.transform.position,this.transform.rotation);
+//			}
+//			break;
+//		default:
+//			Debug.Log("Default");
+//			break;
+//		}
 	}
 	// Update is called once per frame
 	void Update () {
