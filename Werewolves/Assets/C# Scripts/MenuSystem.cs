@@ -33,7 +33,7 @@ public class MenuSystem : MonoBehaviour {
 	}
 
 	void menuFunction ( int id ) {
-		if(GUILayout.Button(Resources.Load("Menu Textures/Start Game")  as Texture,"")){
+		if(GUILayout.Button(Resources.Load("Menu Textures/Begin")  as Texture,"")){
 			currentMenu = 4;
 			Application.LoadLevel("GameScene");
 		}
@@ -49,27 +49,27 @@ public class MenuSystem : MonoBehaviour {
 		}
 		if(GUILayout.Button(Resources.Load("Menu Textures/Audio") as Texture,"")){
 		}
-		if(GUILayout.Button(Resources.Load("Menu Textures/Return") as Texture,"")){
+		if(GUILayout.Button(Resources.Load("Menu Textures/Menu") as Texture,"")){
 			currentMenu = 0;
 		}
 	}
 	void pauseFunction ( int id ) {
-		if(GUILayout.Button(Resources.Load("Menu Textures/Resume") as Texture,"")){
+		if(GUILayout.Button(Resources.Load("Menu Textures/Continue") as Texture,"")){
 			currentMenu = 4;
 			Time.timeScale = 1;
 		}
 		if(GUILayout.Button(Resources.Load("Menu Textures/Options") as Texture,"")){
 			currentMenu = 1;
 		}
-		if(GUILayout.Button(Resources.Load("Menu Textures/Exit To Menu") as Texture,"")){
+		if(GUILayout.Button(Resources.Load("Menu Textures/Menu") as Texture,"")){
 			currentMenu = 0;
 		}
 	}
 	void deathFunction ( int id ) {
-		if(GUILayout.Button(Resources.Load("Menu Textures/Retry") as Texture,"")){
+		if(GUILayout.Button(Resources.Load("Menu Textures/Continue") as Texture,"")){
 			Application.LoadLevel("GameScene");
 		}
-		if(GUILayout.Button(Resources.Load("Menu Textures/Exit To Menu") as Texture,"")){
+		if(GUILayout.Button(Resources.Load("Menu Textures/Menu") as Texture,"")){
 			currentMenu = 0;
 		}
 		if(GUILayout.Button(Resources.Load("Menu Textures/Quit") as Texture,"")){
