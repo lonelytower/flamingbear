@@ -30,7 +30,7 @@ public class ItemDrops : MonoBehaviour {
 			dropTable.Add("Musket");
 			dropTablePct.Add(20);
 			dropTablePct.Add(25);
-			dropTablePct.Add(20);
+			dropTablePct.Add(100);
 			dropTablePct.Add(10);
 			dropTablePct.Add(15);
 			dropTablePct.Add(5);
@@ -46,13 +46,16 @@ public class ItemDrops : MonoBehaviour {
 	}
 
 	public void triggerDrop(){
-
+		GameObject newDrop;
 		for(int i = 1; i < dropTable.Count; i++){
 			float value = Random.Range(0,100);
 			Debug.Log(value.ToString());
 			if(value > (100-dropTablePct[i])){
-				GameObject.Instantiate(Resources.Load("Items/"+ dropTable[i]),this.transform.position,this.transform.rotation);
-			}
+				if(Resources.Load("Items/"+ dropTable[i])!=null){
+					newDrop = GameObject.Instantiate(Resources.Load("Items/"+ dropTable[i]),this.transform.position,this.transform.rotation) as GameObject;
+					newDrop.name = dropTable[i];
+				}
+				}
 		}
 //		float value = Random.Range(0,100);
 //		Debug.Log(value.ToString());
