@@ -49,7 +49,6 @@ public class ItemDrops : MonoBehaviour {
 		GameObject newDrop;
 		for(int i = 1; i < dropTable.Count; i++){
 			float value = Random.Range(0,100);
-			Debug.Log(value.ToString());
 			if(value > (100-dropTablePct[i])){
 				if(Resources.Load("Items/"+ dropTable[i])!=null){
 					newDrop = GameObject.Instantiate(Resources.Load("Items/"+ dropTable[i]),this.transform.position,this.transform.rotation) as GameObject;

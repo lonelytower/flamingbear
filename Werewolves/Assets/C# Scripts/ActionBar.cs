@@ -15,7 +15,8 @@ public class ActionBar : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
+//		if(Input.GetKeyDown(KeyCode.O)){
+//		}
 	}
 
 
@@ -42,8 +43,7 @@ public class ActionBar : MonoBehaviour {
 					//increase count if stackable item, else repair/replace?
 				}
 			} else if (slot.GetComponent<SpriteRenderer>().sprite ==null){
-				Debug.Log("Sprites/Equipment/" + itemToAdd.name);
-				slot.GetComponent<SpriteRenderer>().sprite = Resources.Load("Sprites/Equipment/" + itemToAdd.name, typeof(Sprite)) as Sprite;
+				slot.GetComponent<SpriteRenderer>().sprite = Resources.Load("Sprites/Equipment/Icons/" + itemToAdd.name, typeof(Sprite)) as Sprite;
 				break;
 			}
 		}

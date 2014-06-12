@@ -17,5 +17,6 @@ public class Pickup : MonoBehaviour {
 		if(collisionObject.gameObject.tag=="Pickups"){
 			GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.addItemToBar(collisionObject.gameObject);
 		}
+		Destroy(collisionObject.gameObject);
 	}
 }
