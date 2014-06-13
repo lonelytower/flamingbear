@@ -4,11 +4,10 @@ using System.Collections;
 
 public class ActionBar : MonoBehaviour {
 
-	public Sprite explosions;
 	List<GameObject> actionBarSlots = new List<GameObject>();
 	// Use this for initialization
 	void Start () {
-		for(int i = 1; i<=10; i++){
+		for(int i = 1; i<=4; i++){
 			actionBarSlots.Add(GameObject.Find("Slot" + i.ToString()));
 		}
 	}
@@ -27,13 +26,6 @@ public class ActionBar : MonoBehaviour {
 			}
 		}
 	}
-	void OnMouseDrag(){
-		if(name.Contains("Slot")){
-			Vector3 screenMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-			Vector3 mouseOffset = screenMouse - transform.parent.position;
-			this.transform.localPosition = new Vector3(mouseOffset.x,mouseOffset.y,0);
-		}
-	}
 
 	public void addItemToBar(GameObject itemToAdd){
 		Debug.Log(itemToAdd.name.ToString());
@@ -43,7 +35,7 @@ public class ActionBar : MonoBehaviour {
 					//increase count if stackable item, else repair/replace?
 				}
 			} else if (slot.GetComponent<SpriteRenderer>().sprite ==null){
-				slot.GetComponent<SpriteRenderer>().sprite = Resources.Load("Sprites/Equipment/Icons/" + itemToAdd.name, typeof(Sprite)) as Sprite;
+				slot.GetComponent<SpriteRenderer>().sprite = Resources.Load("Sprites/Equipment/" + itemToAdd.name, typeof(Sprite)) as Sprite;
 				break;
 			}
 		}

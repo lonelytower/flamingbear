@@ -13,8 +13,8 @@ public class HealthDisplay : MonoBehaviour {
 		if(GameObject.FindGameObjectWithTag("Player")!=null){
 			playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<Stats>().health;
 		}
-		if(this.name == "Health Bar"){
-			this.transform.localScale = new Vector3 (playerHealth*3/100,1,0);
+		if(this.name == "Health Bar Green"){
+			this.transform.localScale = new Vector3 (playerHealth/100,1,0);
 		}
 	}
 }
