@@ -30,10 +30,10 @@ public class ItemDrops : MonoBehaviour {
 			dropTable.Add("Musket");
 			dropTablePct.Add(20);
 			dropTablePct.Add(25);
-			dropTablePct.Add(100);
+			dropTablePct.Add(10);
 			dropTablePct.Add(10);
 			dropTablePct.Add(15);
-			dropTablePct.Add(5);
+			dropTablePct.Add(100);
 			dropTablePct.Add(5);
 			break;
 		case(2):

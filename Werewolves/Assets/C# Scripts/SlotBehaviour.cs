@@ -8,7 +8,6 @@ public class SlotBehaviour : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		originalPosition = this.transform.localPosition;
-		Debug.Log(originalPosition.ToString());
 	}
 	
 	// Update is called once per frame
@@ -25,14 +24,22 @@ public class SlotBehaviour : MonoBehaviour {
 	}
 
 	void OnMouseUpAsButton(){
-		Debug.Log("Occured");
 		GameObject droppedItem;
-		Debug.Log(Vector3.Distance(this.transform.localPosition,originalPosition).ToString());
 		if(Vector3.Distance(this.transform.localPosition,originalPosition)>1){
 			this.transform.localPosition = originalPosition;
-			droppedItem = GameObject.Instantiate(Resources.Load("Items/" + this.GetComponent<SpriteRenderer>().sprite.name),GameObject.FindGameObjectWithTag("Player").transform.position, this.transform.rotation) as GameObject;
-			droppedItem.name = this.GetComponent<SpriteRenderer>().sprite.name;
-			this.GetComponent<SpriteRenderer>().sprite = null;
+			if(name.Contains("Equip")){
+				if(GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.addItemToBar(Resources.Load("Items/" + this.GetComponent<SpriteRenderer>().sprite.name) as GameObject)==true){
+
+				} else {
+					droppedItem = GameObject.Instantiate(Resources.Load("Items/" + this.GetComponent<SpriteRenderer>().sprite.name),GameObject.FindGameObjectWithTag("Player").transform.position, this.transform.rotation) as GameObject;
+					droppedItem.name = this.GetComponent<SpriteRenderer>().sprite.name;
+				}
+				this.GetComponent<SpriteRenderer>().sprite = null;
+			} else {
+				droppedItem = GameObject.Instantiate(Resources.Load("Items/" + this.GetComponent<SpriteRenderer>().sprite.name),GameObject.FindGameObjectWithTag("Player").transform.position, this.transform.rotation) as GameObject;
+				droppedItem.name = this.GetComponent<SpriteRenderer>().sprite.name;
+				this.GetComponent<SpriteRenderer>().sprite = null;
+			}
 		} else {
 			this.transform.localPosition = originalPosition;
 		}

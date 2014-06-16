@@ -10,13 +10,16 @@ public class WeaponSystem : MonoBehaviour {
 	public float delay = 1; //all the inheritence!
 	float delayCount = 2; //So we can set it back to the initial delay
 	bool switchPressed = false;
+	GameObject equippedItem;
+	GameObject equippedItem2;
 	// Use this for initialization
 	void Start () {
-	
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
 		if(Input.GetAxis("Fire3")>0&&switchPressed == false){ //Left shift and middle mouse button
 			switchPressed = true;
 			//Switch weapons
@@ -48,28 +51,33 @@ public class WeaponSystem : MonoBehaviour {
 				if(melee){
 					StartCoroutine(launchMeleeAttack(this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length));
 					//Swing, thrust, bash, etc
-					GameObject projectileObj;
+					GameObject projectileObj = null;
 					
 					switch(this.GetComponent<Movement>().direction){
 					case(1):
-						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/SwordSwipe"),this.transform.position+(new Vector3(0,0.3f,0)),this.transform.rotation) as GameObject;
+						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/Swipe"),this.transform.position+(new Vector3(0,0.3f,0)),this.transform.rotation) as GameObject;
 						break;
 					case(2):
-						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/SwordSwipe"),this.transform.position+(new Vector3(0,-0.3f,0)),this.transform.rotation) as GameObject;
+						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/Swipe"),this.transform.position+(new Vector3(0,-0.3f,0)),this.transform.rotation) as GameObject;
 						break;
 					case(3):
-						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/SwordSwipe"),this.transform.position+(new Vector3(-0.3f,0,0)),this.transform.rotation) as GameObject;
+						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/Swipe"),this.transform.position+(new Vector3(-0.3f,0,0)),this.transform.rotation) as GameObject;
 						projectileObj.transform.Rotate(new Vector3(0,0,90));
 						break;
 					case(4):
-						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/SwordSwipe"),this.transform.position+(new Vector3(0.3f,0,0)),this.transform.rotation) as GameObject;
+						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/Swipe"),this.transform.position+(new Vector3(0.3f,0,0)),this.transform.rotation) as GameObject;
 						projectileObj.transform.Rotate(new Vector3(0,0,90));
 						break;
 					default:
 						break;
 					}
+					newEquippedItem();
 				//	projectileObj.GetComponent<Projectile>().velocity = 5; //Set it to the weapon value.
-				//	projectileObj.GetComponent<Projectile>().damage = 5;
+					if(equippedItem != null){
+						projectileObj.GetComponent<Projectile>().damage = equippedItem.GetComponent<WeaponStats>().enemyDamage;
+					} else {
+						projectileObj.GetComponent<Projectile>().damage = 1;
+					}
 				//	projectileObj.GetComponent<Projectile>().lifetime = 0.1f;
 				} else {
 					this.GetComponentInChildren<Detection>().increaseRadius(5);
@@ -148,5 +156,13 @@ public class WeaponSystem : MonoBehaviour {
 			break;
 		}
 		this.GetComponent<Movement>().moveable = true;
+	}
+
+	public void newEquippedItem(){
+		GameObject equippedItem = Resources.Load("Items/" + GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnEquippedItem(0).name) as GameObject;
+		GameObject equippedItem2 = Resources.Load("Items/" + GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnEquippedItem(1).name) as GameObject;
+		if(equippedItem!=null){
+			delayCount = equippedItem.GetComponent<WeaponStats>().delay;
+		}
 	}
 }
