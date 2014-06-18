@@ -27,14 +27,22 @@ public class Stats : MonoBehaviour {
 		if(tag == "Enemy"){
 			if(collision.gameObject.tag=="Projectile"){
 				if(collision.gameObject.GetComponent<Projectile>().ally == true){
-					health -= collision.gameObject.GetComponent<Projectile>().damage;
+					if(collider.gameObject.GetComponent<Projectile>().damageType == 0){
+						health -= collision.gameObject.GetComponent<Projectile>().damage*2;
+					} else {
+						health -= collision.gameObject.GetComponent<Projectile>().damage;
+					}
 					Destroy(collision.gameObject);
 				}
 			}
 		} else if(tag == "Player"){
 			if(collision.gameObject.tag=="Projectile"){
 				if(collision.gameObject.GetComponent<Projectile>().ally == false){
-					health -= collision.gameObject.GetComponent<Projectile>().damage;
+					if(collider.gameObject.GetComponent<Projectile>().damageType == 0){
+						health -= collision.gameObject.GetComponent<Projectile>().damage*2;
+					} else {
+						health -= collision.gameObject.GetComponent<Projectile>().damage;
+					}
 					this.GetComponent<Movement>().TakeDamage (collision.gameObject.transform.position);
 					Destroy(collision.gameObject);
 				}

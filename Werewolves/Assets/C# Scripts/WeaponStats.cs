@@ -4,8 +4,8 @@ using System.Collections;
 public class WeaponStats : MonoBehaviour {
 
 	public float delay;
-	public int enemyDamage;
-	public int objectDamage;
+	public int damage;
+	public int damageType; //0 = sharp, 1 = blunt
 
 	// Use this for initialization
 	void Start () {

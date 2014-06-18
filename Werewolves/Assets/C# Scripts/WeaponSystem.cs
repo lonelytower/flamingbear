@@ -74,7 +74,8 @@ public class WeaponSystem : MonoBehaviour {
 					newEquippedItem();
 				//	projectileObj.GetComponent<Projectile>().velocity = 5; //Set it to the weapon value.
 					if(equippedItem != null){
-						projectileObj.GetComponent<Projectile>().damage = equippedItem.GetComponent<WeaponStats>().enemyDamage;
+						projectileObj.GetComponent<Projectile>().damage = equippedItem.GetComponent<WeaponStats>().damage;
+						projectileObj.GetComponent<Projectile>().damageType = equippedItem.GetComponent<WeaponStats>().damageType;
 					} else {
 						projectileObj.GetComponent<Projectile>().damage = 1;
 					}
