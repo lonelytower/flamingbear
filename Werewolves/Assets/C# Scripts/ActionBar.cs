@@ -108,4 +108,11 @@ public class ActionBar : MonoBehaviour {
 		}
 		return addedToBar;
 	}
+	public List<GameObject> returnActionBarList(bool equipSlots){
+		if(equipSlots){
+			return actionBarEquipSlots;;
+		} else {
+			return actionBarSlots;
+		}
+	}
 }

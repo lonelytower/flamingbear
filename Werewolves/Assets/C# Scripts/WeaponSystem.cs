@@ -46,73 +46,87 @@ public class WeaponSystem : MonoBehaviour {
 			switchPressed = false;
 		}
 		if(Input.GetAxis("Fire1")>0){ //Left Control and left mouse button, remap latter
-			if(delayCount<=0){
-				delayCount = delay;
-				if(melee){
-					StartCoroutine(launchMeleeAttack(this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length));
-					//Swing, thrust, bash, etc
-					GameObject projectileObj = null;
-					
-					switch(this.GetComponent<Movement>().direction){
-					case(1):
-						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/Swipe"),this.transform.position+(new Vector3(0,0.3f,0)),this.transform.rotation) as GameObject;
-						break;
-					case(2):
-						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/Swipe"),this.transform.position+(new Vector3(0,-0.3f,0)),this.transform.rotation) as GameObject;
-						break;
-					case(3):
-						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/Swipe"),this.transform.position+(new Vector3(-0.3f,0,0)),this.transform.rotation) as GameObject;
-						projectileObj.transform.Rotate(new Vector3(0,0,90));
-						break;
-					case(4):
-						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/Swipe"),this.transform.position+(new Vector3(0.3f,0,0)),this.transform.rotation) as GameObject;
-						projectileObj.transform.Rotate(new Vector3(0,0,90));
-						break;
-					default:
-						break;
-					}
-					newEquippedItem();
-				//	projectileObj.GetComponent<Projectile>().velocity = 5; //Set it to the weapon value.
-					if(equippedItem != null){
-						projectileObj.GetComponent<Projectile>().damage = equippedItem.GetComponent<WeaponStats>().damage;
-						projectileObj.GetComponent<Projectile>().damageType = equippedItem.GetComponent<WeaponStats>().damageType;
+			Vector2 mouseVector = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+			bool attack = true;
+			foreach(GameObject slot in GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(false)){
+				if(slot.collider2D.OverlapPoint(mouseVector)){
+					attack = false;
+				}
+			}
+			foreach(GameObject slot in GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)){
+				if(slot.collider2D.OverlapPoint(mouseVector)){
+					attack = false;
+				}
+			}
+			if(attack){
+				if(delayCount<=0){
+					delayCount = delay;
+					if(melee){
+						StartCoroutine(launchMeleeAttack(this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length));
+						//Swing, thrust, bash, etc
+						GameObject projectileObj = null;
+						
+						switch(this.GetComponent<Movement>().direction){
+						case(1):
+							projectileObj = GameObject.Instantiate(Resources.Load("Weapons/Swipe"),this.transform.position+(new Vector3(0,0.3f,0)),this.transform.rotation) as GameObject;
+							break;
+						case(2):
+							projectileObj = GameObject.Instantiate(Resources.Load("Weapons/Swipe"),this.transform.position+(new Vector3(0,-0.3f,0)),this.transform.rotation) as GameObject;
+							break;
+						case(3):
+							projectileObj = GameObject.Instantiate(Resources.Load("Weapons/Swipe"),this.transform.position+(new Vector3(-0.3f,0,0)),this.transform.rotation) as GameObject;
+							projectileObj.transform.Rotate(new Vector3(0,0,90));
+							break;
+						case(4):
+							projectileObj = GameObject.Instantiate(Resources.Load("Weapons/Swipe"),this.transform.position+(new Vector3(0.3f,0,0)),this.transform.rotation) as GameObject;
+							projectileObj.transform.Rotate(new Vector3(0,0,90));
+							break;
+						default:
+							break;
+						}
+						newEquippedItem();
+					//	projectileObj.GetComponent<Projectile>().velocity = 5; //Set it to the weapon value.
+						if(equippedItem != null){
+							projectileObj.GetComponent<Projectile>().damage = equippedItem.GetComponent<WeaponStats>().damage;
+							projectileObj.GetComponent<Projectile>().damageType = equippedItem.GetComponent<WeaponStats>().damageType;
+						} else {
+							projectileObj.GetComponent<Projectile>().damage = 1;
+						}
+					//	projectileObj.GetComponent<Projectile>().lifetime = 0.1f;
 					} else {
-						projectileObj.GetComponent<Projectile>().damage = 1;
+						this.GetComponentInChildren<Detection>().increaseRadius(5);
+						//Fire projectile! Projecticle sprite inherited from weapon later
+						GameObject projectileObj;
+						switch(this.GetComponent<Movement>().direction){
+						case(1):
+							projectileObj = GameObject.Instantiate(Resources.Load("Weapons/ProjectileBase"),this.transform.position+(new Vector3(0,0.3f,0)),this.transform.rotation) as GameObject;
+							projectileObj.GetComponent<Projectile>().lifetime = 10;
+							projectileObj.GetComponent<Projectile>().direction=this.GetComponent<Movement>().direction;
+							projectileObj.transform.Rotate(new Vector3(0,0,90));
+							break;
+						case(2):
+							projectileObj = GameObject.Instantiate(Resources.Load("Weapons/ProjectileBase"),this.transform.position+(new Vector3(0,-0.3f,0)),this.transform.rotation) as GameObject;
+							projectileObj.GetComponent<Projectile>().lifetime = 10;
+							projectileObj.GetComponent<Projectile>().direction=this.GetComponent<Movement>().direction;
+							projectileObj.transform.Rotate(new Vector3(0,0,-90));
+							break;
+						case(3):
+							projectileObj = GameObject.Instantiate(Resources.Load("Weapons/ProjectileBase"),this.transform.position+(new Vector3(-0.3f,0,0)),this.transform.rotation) as GameObject;
+							projectileObj.GetComponent<Projectile>().lifetime = 10;
+							projectileObj.GetComponent<Projectile>().direction=this.GetComponent<Movement>().direction;
+							break;
+						case(4):
+							projectileObj = GameObject.Instantiate(Resources.Load("Weapons/ProjectileBase"),this.transform.position+(new Vector3(0.3f,0,0)),this.transform.rotation) as GameObject;
+							projectileObj.GetComponent<Projectile>().lifetime = 10;
+							projectileObj.GetComponent<Projectile>().direction=this.GetComponent<Movement>().direction;
+							break;
+						default:
+							break;
+						}
+						//projectileObj = GameObject.Instantiate(Resources.Load("Weapons/ProjectileBase"),this.transform.position+Vector3.up,this.transform.rotation) as GameObject;
+						//projectileObj.GetComponent<Projectile>().velocity = 10f; //Set it to the weapon value.
+						//projectileObj.GetComponent<Projectile>().damage = 5;
 					}
-				//	projectileObj.GetComponent<Projectile>().lifetime = 0.1f;
-				} else {
-					this.GetComponentInChildren<Detection>().increaseRadius(5);
-					//Fire projectile! Projecticle sprite inherited from weapon later
-					GameObject projectileObj;
-					switch(this.GetComponent<Movement>().direction){
-					case(1):
-						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/ProjectileBase"),this.transform.position+(new Vector3(0,0.3f,0)),this.transform.rotation) as GameObject;
-						projectileObj.GetComponent<Projectile>().lifetime = 10;
-						projectileObj.GetComponent<Projectile>().direction=this.GetComponent<Movement>().direction;
-						projectileObj.transform.Rotate(new Vector3(0,0,90));
-						break;
-					case(2):
-						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/ProjectileBase"),this.transform.position+(new Vector3(0,-0.3f,0)),this.transform.rotation) as GameObject;
-						projectileObj.GetComponent<Projectile>().lifetime = 10;
-						projectileObj.GetComponent<Projectile>().direction=this.GetComponent<Movement>().direction;
-						projectileObj.transform.Rotate(new Vector3(0,0,-90));
-						break;
-					case(3):
-						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/ProjectileBase"),this.transform.position+(new Vector3(-0.3f,0,0)),this.transform.rotation) as GameObject;
-						projectileObj.GetComponent<Projectile>().lifetime = 10;
-						projectileObj.GetComponent<Projectile>().direction=this.GetComponent<Movement>().direction;
-						break;
-					case(4):
-						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/ProjectileBase"),this.transform.position+(new Vector3(0.3f,0,0)),this.transform.rotation) as GameObject;
-						projectileObj.GetComponent<Projectile>().lifetime = 10;
-						projectileObj.GetComponent<Projectile>().direction=this.GetComponent<Movement>().direction;
-						break;
-					default:
-						break;
-					}
-					//projectileObj = GameObject.Instantiate(Resources.Load("Weapons/ProjectileBase"),this.transform.position+Vector3.up,this.transform.rotation) as GameObject;
-					//projectileObj.GetComponent<Projectile>().velocity = 10f; //Set it to the weapon value.
-					//projectileObj.GetComponent<Projectile>().damage = 5;
 				}
 			}
 		}
