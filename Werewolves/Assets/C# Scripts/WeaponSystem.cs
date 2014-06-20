@@ -8,7 +8,7 @@ public class WeaponSystem : MonoBehaviour {
 	bool melee = true; //Whether or not the equipped weapon is melee, will be inherited from the weapon itself later
 	GameObject equippedWeapon; //The weapon you have equipped, selected from the Resources/weapons folder after we make them all
 	public float delay = 1; //all the inheritence!
-	float delayCount = 2; //So we can set it back to the initial delay
+	float delayCount = 1f; //So we can set it back to the initial delay
 	bool switchPressed = false;
 	GameObject equippedItem;
 	GameObject equippedItem2;
@@ -65,25 +65,34 @@ public class WeaponSystem : MonoBehaviour {
 						StartCoroutine(launchMeleeAttack(this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length));
 						//Swing, thrust, bash, etc
 						GameObject projectileObj = null;
-						
-						switch(this.GetComponent<Movement>().direction){
-						case(1):
-							projectileObj = GameObject.Instantiate(Resources.Load("Weapons/Swipe"),this.transform.position+(new Vector3(0,0.3f,0)),this.transform.rotation) as GameObject;
-							break;
-						case(2):
-							projectileObj = GameObject.Instantiate(Resources.Load("Weapons/Swipe"),this.transform.position+(new Vector3(0,-0.3f,0)),this.transform.rotation) as GameObject;
-							break;
-						case(3):
-							projectileObj = GameObject.Instantiate(Resources.Load("Weapons/Swipe"),this.transform.position+(new Vector3(-0.3f,0,0)),this.transform.rotation) as GameObject;
-							projectileObj.transform.Rotate(new Vector3(0,0,90));
-							break;
-						case(4):
-							projectileObj = GameObject.Instantiate(Resources.Load("Weapons/Swipe"),this.transform.position+(new Vector3(0.3f,0,0)),this.transform.rotation) as GameObject;
-							projectileObj.transform.Rotate(new Vector3(0,0,90));
-							break;
-						default:
-							break;
-						}
+
+
+						Vector2 spawnPosition;
+						spawnPosition = mouseVector - new Vector2(this.transform.position.x,this.transform.position.y);
+						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/Swipe"),this.transform.position + new Vector3(spawnPosition.normalized.x,spawnPosition.normalized.y,0),this.transform.rotation) as GameObject;
+						projectileObj.transform.LookAt(this.transform.position);
+						projectileObj.transform.rotation = Quaternion.Euler(new Vector3(0,0,projectileObj.transform.eulerAngles.x));
+					//	Debug.Break();
+//						switch(this.GetComponent<Movement>().direction){
+//						case(1):
+//							projectileObj = GameObject.Instantiate(Resources.Load("Weapons/Swipe"),this.transform.position+(new Vector3(0,0.3f,0)),this.transform.rotation) as GameObject;
+//							break;
+//						case(2):
+//							projectileObj = GameObject.Instantiate(Resources.Load("Weapons/Swipe"),this.transform.position+(new Vector3(0,-0.3f,0)),this.transform.rotation) as GameObject;
+//							break;
+//						case(3):
+//							projectileObj = GameObject.Instantiate(Resources.Load("Weapons/Swipe"),this.transform.position+(new Vector3(-0.3f,0,0)),this.transform.rotation) as GameObject;
+//							projectileObj.transform.Rotate(new Vector3(0,0,90));
+//							break;
+//						case(4):
+//							projectileObj = GameObject.Instantiate(Resources.Load("Weapons/Swipe"),this.transform.position+(new Vector3(0.3f,0,0)),this.transform.rotation) as GameObject;
+//							projectileObj.transform.Rotate(new Vector3(0,0,90));
+//							break;
+//						default:
+//							break;
+//						}
+
+
 						newEquippedItem();
 					//	projectileObj.GetComponent<Projectile>().velocity = 5; //Set it to the weapon value.
 						if(equippedItem != null){

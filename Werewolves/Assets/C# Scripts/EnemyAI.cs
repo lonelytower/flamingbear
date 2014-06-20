@@ -103,6 +103,9 @@ public class EnemyAI : MonoBehaviour {
 		}
 		moveable = false;
 		entity.GetComponent<Stats>().health -= this.GetComponent<Stats>().damage;
+		if(Random.Range(1,100)<5){
+			entity.GetComponent<Stats>().cursed = true;
+		}
 		if (entity.GetComponent<Movement> () != null) {
 						entity.GetComponent<Movement> ().TakeDamage (this.transform.position);
 				}
