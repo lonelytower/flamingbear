@@ -195,6 +195,8 @@ public class WeaponSystem : MonoBehaviour {
 		if(equippedItem!=null){
 			if(equippedItem.GetComponent<WeaponStats>().ranged == true){
 				melee = false;
+			} else {
+				melee = true;
 			}
 		}
 		if(equippedItem!=null){
