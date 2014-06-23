@@ -27,7 +27,7 @@ public class ItemDrops : MonoBehaviour {
 			dropTable.Add("Revolver");
 			dropTable.Add("Shield");
 			dropTable.Add("Mace");
-			dropTable.Add("Musket");
+			dropTable.Add("Rifle");
 			dropTablePct.Add(20);
 			dropTablePct.Add(25);
 			dropTablePct.Add(10);

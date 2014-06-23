@@ -5,7 +5,7 @@ public class WeaponSystem : MonoBehaviour {
 	
 	//This is where we do all the weapon switching and stuff.
 	int weaponSlot = 1; //2 slots right now, set to 1 for melee and 2 for ranged
-	bool melee = true; //Whether or not the equipped weapon is melee, will be inherited from the weapon itself later
+	public bool melee = true; //Whether or not the equipped weapon is melee, will be inherited from the weapon itself later
 	GameObject equippedWeapon; //The weapon you have equipped, selected from the Resources/weapons folder after we make them all
 	public float delay = 1; //all the inheritence!
 	float delayCount = 1f; //So we can set it back to the initial delay
@@ -20,31 +20,31 @@ public class WeaponSystem : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if(Input.GetAxis("Fire3")>0&&switchPressed == false){ //Left shift and middle mouse button
-			switchPressed = true;
-			//Switch weapons
-			switch(weaponSlot){
-			case(1):
-				Debug.Log("Ranged");
-				weaponSlot=2;
-				delay = 2;
-				this.renderer.material.color = Color.grey;
-				melee = false;
-				break;
-			case(2):
-				Debug.Log("Melee");
-				delay = 1f;
-				weaponSlot=1;
-				this.renderer.material.color = Color.white;
-				melee = true;
-				break;
-			default:
-				break;
-			}
-		}
-		if(Input.GetAxis("Fire3")<=0){
-			switchPressed = false;
-		}
+//		if(Input.GetAxis("Fire3")>0&&switchPressed == false){ //Left shift and middle mouse button
+//			switchPressed = true;
+//			//Switch weapons
+//			switch(weaponSlot){
+//			case(1):
+//				Debug.Log("Ranged");
+//				weaponSlot=2;
+//				delay = 2;
+//				this.renderer.material.color = Color.grey;
+//				melee = false;
+//				break;
+//			case(2):
+//				Debug.Log("Melee");
+//				delay = 1f;
+//				weaponSlot=1;
+//				this.renderer.material.color = Color.white;
+//				melee = true;
+//				break;
+//			default:
+//				break;
+//			}
+//		}
+//		if(Input.GetAxis("Fire3")<=0){
+//			switchPressed = false;
+//		}
 		if(Input.GetAxis("Fire1")>0){ //Left Control and left mouse button, remap latter
 			Vector2 mouseVector = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			bool attack = true;
@@ -91,7 +91,7 @@ public class WeaponSystem : MonoBehaviour {
 //						}
 
 
-						newEquippedItem();
+						//newEquippedItem();
 					//	projectileObj.GetComponent<Projectile>().velocity = 5; //Set it to the weapon value.
 						if(equippedItem != null){
 							projectileObj.GetComponent<Projectile>().damage = equippedItem.GetComponent<WeaponStats>().damage;
@@ -136,7 +136,6 @@ public class WeaponSystem : MonoBehaviour {
 						
 						spawnPosition = mouseVector - new Vector2(this.transform.position.x,this.transform.position.y);
 						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/ProjectileBase"),this.transform.position + new Vector3(spawnPosition.normalized.x,spawnPosition.normalized.y,0),this.transform.rotation) as GameObject;
-						Debug.Log(spawnPosition.ToString());
 						projectileObj.GetComponent<Projectile>().flightDirection = spawnPosition;
 						//projectileObj.GetComponent<Projectile>().direction=this.GetComponent<Movement>().direction;
 						projectileObj.GetComponent<Projectile>().velocity = 10f; //Set it to the weapon value.
@@ -189,8 +188,15 @@ public class WeaponSystem : MonoBehaviour {
 	}
 
 	public void newEquippedItem(){
-		GameObject equippedItem = Resources.Load("Items/" + GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnEquippedItem(0).name) as GameObject;
-		GameObject equippedItem2 = Resources.Load("Items/" + GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnEquippedItem(1).name) as GameObject;
+		equippedItem = Resources.Load("Items/" + GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnEquippedItem(0).GetComponent<SpriteRenderer>().sprite.name) as GameObject;
+		if(GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnEquippedItem(1).GetComponent<SpriteRenderer>().sprite!= null){
+			equippedItem2 = Resources.Load("Items/" + GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnEquippedItem(1).GetComponent<SpriteRenderer>().sprite.name) as GameObject;
+		}
+		if(equippedItem!=null){
+			if(equippedItem.GetComponent<WeaponStats>().ranged == true){
+				melee = false;
+			}
+		}
 		if(equippedItem!=null){
 			delayCount = equippedItem.GetComponent<WeaponStats>().delay;
 		}

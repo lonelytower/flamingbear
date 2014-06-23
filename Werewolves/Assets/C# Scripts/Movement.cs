@@ -6,6 +6,7 @@ public class Movement : MonoBehaviour {
 	public float speed;
 	public bool moveable = true;
 	public int direction = 0; //1 = up 2 = down 3 = left 4 = right
+	float defaultSpeed;
 	float initialDelay = 0.1f;
 	float delay = 0.1f;
 	float hori;
@@ -21,6 +22,7 @@ public class Movement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		defaultSpeed = speed;
 	}
 
 	public void TakeDamage(Vector2 sourceposition)
@@ -35,6 +37,11 @@ public class Movement : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		if(Input.GetKey(KeyCode.LeftShift)){
+			speed = defaultSpeed*2;
+		} else {
+			speed = defaultSpeed;
+		}
 		mouseX =  Input.mousePosition.x/Screen.width;
 		mouseY =  Input.mousePosition.y/Screen.height;
 		if(Input.GetAxis("Fire1")>0){
