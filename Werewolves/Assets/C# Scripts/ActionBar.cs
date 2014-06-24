@@ -23,6 +23,7 @@ public class ActionBar : MonoBehaviour {
 		}
 		if(Input.GetKeyDown(KeyCode.Mouse1)){
 			GameObject tempItem;
+			Sprite tempSprite;
 			Vector2 mouseVector = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			if(actionBarEquipSlots[0].collider2D.OverlapPoint(mouseVector)){
 				//Right click on equipSlot1
@@ -32,68 +33,116 @@ public class ActionBar : MonoBehaviour {
 			}
 			if(actionBarSlots[0].collider2D.OverlapPoint(mouseVector)){
 				tempItem = Resources.Load("Items/"+actionBarSlots[0].GetComponent<SpriteRenderer>().sprite.name) as GameObject;
-				if(actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite==null){
+				if(actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite!=null){
+					tempSprite = actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite;
 					actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite=actionBarSlots[0].GetComponent<SpriteRenderer>().sprite;
 					if(tempItem.GetComponent<WeaponStats>().twoHanded == true){
 						actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=actionBarSlots[0].GetComponent<SpriteRenderer>().sprite;
+					} else {
+						actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=null;
 					}
-					actionBarSlots[0].GetComponent<SpriteRenderer>().sprite = null;
-					GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().weaponSystemEntity.newEquippedItem();
-				} else if (actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite==null&&tempItem.GetComponent<WeaponStats>().twoHanded == false){
-					actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=actionBarSlots[0].GetComponent<SpriteRenderer>().sprite;
-					actionBarSlots[0].GetComponent<SpriteRenderer>().sprite = null;
+					actionBarSlots[0].GetComponent<SpriteRenderer>().sprite = tempSprite;
+				} else {
+					if(tempItem.GetComponent<WeaponStats>().twoHanded == true){
+						actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite=actionBarSlots[0].GetComponent<SpriteRenderer>().sprite;
+						actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=actionBarSlots[0].GetComponent<SpriteRenderer>().sprite;
+						actionBarSlots[0].GetComponent<SpriteRenderer>().sprite = null;
+					} else if (tempItem.GetComponent<WeaponStats>().twoHanded == false){
+						actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite=actionBarSlots[0].GetComponent<SpriteRenderer>().sprite;
+						actionBarSlots[0].GetComponent<SpriteRenderer>().sprite = null;
+					}
 					GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().weaponSystemEntity.newEquippedItem();
 				}
 				//Right click on Slot1
 			}
 			if(actionBarSlots[1].collider2D.OverlapPoint(mouseVector)){
 				tempItem = Resources.Load("Items/"+actionBarSlots[1].GetComponent<SpriteRenderer>().sprite.name) as GameObject;
-				if(actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite==null){
+				if(actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite!=null){
+					tempSprite = actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite;
 					actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite=actionBarSlots[1].GetComponent<SpriteRenderer>().sprite;
 					if(tempItem.GetComponent<WeaponStats>().twoHanded == true){
 						actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=actionBarSlots[1].GetComponent<SpriteRenderer>().sprite;
+					} else {
+						actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=null;
 					}
-					actionBarSlots[1].GetComponent<SpriteRenderer>().sprite = null;
-					GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().weaponSystemEntity.newEquippedItem();
-				} else if (actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite==null&&tempItem.GetComponent<WeaponStats>().twoHanded == false){
-					actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=actionBarSlots[1].GetComponent<SpriteRenderer>().sprite;
-					actionBarSlots[1].GetComponent<SpriteRenderer>().sprite = null;
+					actionBarSlots[1].GetComponent<SpriteRenderer>().sprite = tempSprite;
+				} else {
+					if(tempItem.GetComponent<WeaponStats>().twoHanded == true){
+						actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite=actionBarSlots[1].GetComponent<SpriteRenderer>().sprite;
+						actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=actionBarSlots[1].GetComponent<SpriteRenderer>().sprite;
+						actionBarSlots[1].GetComponent<SpriteRenderer>().sprite = null;
+					} else if (tempItem.GetComponent<WeaponStats>().twoHanded == false){
+						actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite=actionBarSlots[1].GetComponent<SpriteRenderer>().sprite;
+						actionBarSlots[1].GetComponent<SpriteRenderer>().sprite = null;
+					}
 					GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().weaponSystemEntity.newEquippedItem();
 				}
 				//Right click on Slot2
 			}
 			if(actionBarSlots[2].collider2D.OverlapPoint(mouseVector)){
 				tempItem = Resources.Load("Items/"+actionBarSlots[2].GetComponent<SpriteRenderer>().sprite.name) as GameObject;
-				if(actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite==null){
+				if(actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite!=null){
+					tempSprite = actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite;
 					actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite=actionBarSlots[2].GetComponent<SpriteRenderer>().sprite;
 					if(tempItem.GetComponent<WeaponStats>().twoHanded == true){
 						actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=actionBarSlots[2].GetComponent<SpriteRenderer>().sprite;
+					} else {
+						actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=null;
 					}
-					actionBarSlots[2].GetComponent<SpriteRenderer>().sprite = null;
-					GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().weaponSystemEntity.newEquippedItem();
-				} else if (actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite==null&&tempItem.GetComponent<WeaponStats>().twoHanded == false){
-					actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=actionBarSlots[2].GetComponent<SpriteRenderer>().sprite;
-					actionBarSlots[2].GetComponent<SpriteRenderer>().sprite = null;
+					actionBarSlots[2].GetComponent<SpriteRenderer>().sprite = tempSprite;
+				} else {
+					if(tempItem.GetComponent<WeaponStats>().twoHanded == true){
+						actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite=actionBarSlots[2].GetComponent<SpriteRenderer>().sprite;
+						actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=actionBarSlots[2].GetComponent<SpriteRenderer>().sprite;
+						actionBarSlots[2].GetComponent<SpriteRenderer>().sprite = null;
+					} else if (tempItem.GetComponent<WeaponStats>().twoHanded == false){
+						actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite=actionBarSlots[2].GetComponent<SpriteRenderer>().sprite;
+						actionBarSlots[2].GetComponent<SpriteRenderer>().sprite = null;
+					}
 					GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().weaponSystemEntity.newEquippedItem();
 				}
 				//Right click on Slot3
 			}
 			if(actionBarSlots[3].collider2D.OverlapPoint(mouseVector)){
 				tempItem = Resources.Load("Items/"+actionBarSlots[3].GetComponent<SpriteRenderer>().sprite.name) as GameObject;
-				if(actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite==null){
+				if(actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite!=null){
+					tempSprite = actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite;
 					actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite=actionBarSlots[3].GetComponent<SpriteRenderer>().sprite;
 					if(tempItem.GetComponent<WeaponStats>().twoHanded == true){
 						actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=actionBarSlots[3].GetComponent<SpriteRenderer>().sprite;
+					} else {
+						actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=null;
 					}
-					actionBarSlots[3].GetComponent<SpriteRenderer>().sprite = null;
-					GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().weaponSystemEntity.newEquippedItem();
-				} else if (actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite==null&&tempItem.GetComponent<WeaponStats>().twoHanded == false){
-					actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=actionBarSlots[3].GetComponent<SpriteRenderer>().sprite;
-					actionBarSlots[3].GetComponent<SpriteRenderer>().sprite = null;
+					actionBarSlots[3].GetComponent<SpriteRenderer>().sprite = tempSprite;
+				} else {
+					if(tempItem.GetComponent<WeaponStats>().twoHanded == true){
+						actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite=actionBarSlots[3].GetComponent<SpriteRenderer>().sprite;
+						actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=actionBarSlots[3].GetComponent<SpriteRenderer>().sprite;
+						actionBarSlots[3].GetComponent<SpriteRenderer>().sprite = null;
+					} else if (tempItem.GetComponent<WeaponStats>().twoHanded == false){
+						actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite=actionBarSlots[3].GetComponent<SpriteRenderer>().sprite;
+						actionBarSlots[3].GetComponent<SpriteRenderer>().sprite = null;
+					}
 					GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().weaponSystemEntity.newEquippedItem();
 				}
 				//Right click on Slot4
 			}
+//			if(actionBarSlots[3].collider2D.OverlapPoint(mouseVector)){
+//				tempItem = Resources.Load("Items/"+actionBarSlots[3].GetComponent<SpriteRenderer>().sprite.name) as GameObject;
+//				if(actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite==null){
+//					actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite=actionBarSlots[3].GetComponent<SpriteRenderer>().sprite;
+//					if(tempItem.GetComponent<WeaponStats>().twoHanded == true){
+//						actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=actionBarSlots[3].GetComponent<SpriteRenderer>().sprite;
+//					}
+//					actionBarSlots[3].GetComponent<SpriteRenderer>().sprite = null;
+//					GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().weaponSystemEntity.newEquippedItem();
+//				} else if (actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite==null&&tempItem.GetComponent<WeaponStats>().twoHanded == false){
+//					actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=actionBarSlots[3].GetComponent<SpriteRenderer>().sprite;
+//					actionBarSlots[3].GetComponent<SpriteRenderer>().sprite = null;
+//					GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().weaponSystemEntity.newEquippedItem();
+//				}
+//				//Right click on Slot4
+//			}
 			}
 		}
 
