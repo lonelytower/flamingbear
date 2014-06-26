@@ -4,6 +4,7 @@ using System.Collections;
 public class Stats : MonoBehaviour {
 	
 	public int health; //Damage is subtracted straight from health, if it reaches 0 the unit plays death animation and stops existing
+	public float stamina;
 	public int damage; //Every unit does flat damage, set in inspector to make this easier on us
 	public bool cursed = false;
 	
@@ -19,7 +20,9 @@ public class Stats : MonoBehaviour {
 				Application.LoadLevel("InitialTestScene");
 			}
 			DestroyImmediate(this.gameObject);
-
+		}
+		if(stamina<100){
+			stamina += 0.15f;
 		}
 	
 	}

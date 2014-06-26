@@ -6,6 +6,7 @@ public class Movement : MonoBehaviour {
 	public float speed;
 	public bool moveable = true;
 	public int direction = 0; //1 = up 2 = down 3 = left 4 = right
+	GameObject staminaBar;
 	float defaultSpeed;
 	float initialDelay = 0.1f;
 	float delay = 0.1f;
@@ -13,6 +14,8 @@ public class Movement : MonoBehaviour {
 	float vert;
 	float mouseX;
 	float mouseY;
+	float dashTime = 2;
+	bool dashing = false;
 
 	float stunTime = 0;
 
@@ -23,6 +26,7 @@ public class Movement : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		defaultSpeed = speed;
+		staminaBar = GameObject.Find("StaminaBar");
 	}
 
 	public void TakeDamage(Vector2 sourceposition)
@@ -37,9 +41,18 @@ public class Movement : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetKey(KeyCode.LeftShift)){
+		if(dashing){
 			speed = defaultSpeed*2;
-		} else {
+			dashTime -= Time.deltaTime;
+		}
+		if(Input.GetKeyDown(KeyCode.LeftShift)&&dashing == false){
+			if(GameObject.FindGameObjectWithTag("Player").GetComponent<Stats>().stamina>=33){
+				GameObject.FindGameObjectWithTag("Player").GetComponent<Stats>().stamina -= 33;
+				dashing = true;
+			}
+		} else if(dashTime<=0){
+			dashing = false;
+			dashTime = 2;
 			speed = defaultSpeed;
 		}
 		mouseX =  Input.mousePosition.x/Screen.width;

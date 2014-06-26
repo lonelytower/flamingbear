@@ -4,7 +4,6 @@ using System.Collections;
 public class SlotBehaviour : MonoBehaviour {
 
 	Vector3 originalPosition;
-	Bounds slotBounds;
 
 	// Use this for initialization
 	void Start () {
@@ -64,7 +63,4 @@ public class SlotBehaviour : MonoBehaviour {
 			}
 		}
 	}
-		public Bounds returnBounds(){
-			return slotBounds;
-		}
 }
