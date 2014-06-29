@@ -5,9 +5,9 @@ public class HealthDisplay : MonoBehaviour {
 
 	float playerHealth;
 	bool playerCursed;
-	float curseDelay = 30;
+	float curseDelay = 15;
 	public GameObject cursedBar;
-	public GameObject greenBar;
+	public GameObject healthBar;
 
 	// Use this for initialization
 	void Start () {
@@ -21,17 +21,17 @@ public class HealthDisplay : MonoBehaviour {
 		if(playerCursed){
 			curseDelay -= Time.deltaTime;
 			if(curseDelay <=0){
-				curseDelay = 30;
+				curseDelay = 15;
 				GameObject.FindGameObjectWithTag("Player").GetComponent<Stats>().health -= 10;
 			}
 			if(cursedBar.activeSelf==false){
 				cursedBar.SetActive(true);
-				greenBar.SetActive(false);
+				healthBar.SetActive(false);
 			}
 		} else {
 			if(cursedBar.activeSelf==true){
 				cursedBar.SetActive(false);
-				greenBar.SetActive(true);
+				healthBar.SetActive(true);
 			}
 		}
 		if(this.name.Contains("HealthBar")){

@@ -24,6 +24,9 @@ public class EnemyAI : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		if(this.name.Contains("Curse")){
+			this.renderer.material.color = Color.green;
+		}
 		state = AIState.Idle;
 		targetPlayer = GameObject.FindGameObjectWithTag ("Player");
 	}
@@ -103,7 +106,12 @@ public class EnemyAI : MonoBehaviour {
 		}
 		moveable = false;
 		entity.GetComponent<Stats>().health -= this.GetComponent<Stats>().damage;
-		if(Random.Range(1,100)<5){
+		if(this.name.Contains("Curse")){
+			if(Random.Range(1,100)<60){
+				entity.GetComponent<Stats>().cursed = true;
+			}
+		}
+		 else if(Random.Range(1,100)<5){
 			entity.GetComponent<Stats>().cursed = true;
 		}
 		if (entity.GetComponent<Movement> () != null) {

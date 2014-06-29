@@ -138,7 +138,7 @@ public class WeaponSystem : MonoBehaviour {
 						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/ProjectileBase"),this.transform.position + new Vector3(spawnPosition.normalized.x,spawnPosition.normalized.y,0),this.transform.rotation) as GameObject;
 						projectileObj.GetComponent<Projectile>().flightDirection = spawnPosition;
 						//projectileObj.GetComponent<Projectile>().direction=this.GetComponent<Movement>().direction;
-						projectileObj.GetComponent<Projectile>().velocity = 10f; //Set it to the weapon value.
+						projectileObj.GetComponent<Projectile>().velocity = equippedItem.GetComponent<WeaponStats>().projectileVelocity; //Set it to the weapon value.
 						//projectileObj.GetComponent<Projectile>().damage = 5;
 					}
 				}

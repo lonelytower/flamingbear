@@ -14,7 +14,7 @@ public class Movement : MonoBehaviour {
 	float vert;
 	float mouseX;
 	float mouseY;
-	float dashTime = 2;
+	float dashTime = 0.5f;
 	bool dashing = false;
 
 	float stunTime = 0;
@@ -52,7 +52,7 @@ public class Movement : MonoBehaviour {
 			}
 		} else if(dashTime<=0){
 			dashing = false;
-			dashTime = 2;
+			dashTime = 0.5f;
 			speed = defaultSpeed;
 		}
 		mouseX =  Input.mousePosition.x/Screen.width;
