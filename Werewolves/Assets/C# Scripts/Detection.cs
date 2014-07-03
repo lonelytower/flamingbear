@@ -31,6 +31,12 @@ public class Detection : MonoBehaviour {
 		}
 	}
 
+	void OnTriggerEnter2D(Collider2D collider){
+		if(collider.gameObject.tag=="Enemy"){
+			collider.gameObject.GetComponent<EnemyAI>().setTarget(this.transform.parent.gameObject);
+		}
+	}
+
 	public void increaseRadius(float amount){
 		circColl.radius+= amount;
 	}

@@ -34,7 +34,7 @@ public class HealthDisplay : MonoBehaviour {
 				healthBar.SetActive(true);
 			}
 		}
-		if(this.name.Contains("HealthBar")){
+		if(this.name.Contains("HealthBar")||this.name.Contains("CurseBar")){
 			this.transform.localScale = new Vector3 (playerHealth/100,1,0);
 		}
 	}

@@ -110,7 +110,7 @@ public class Movement : MonoBehaviour {
 								this.GetComponent<Animator> ().Play ("WalkLeft");
 						} else if (hori == 1 && vert == 1) {
 								if (delay <= 0) {
-										rigidbody2D.AddForce (new Vector2 (speed / 2, speed / 2));
+										rigidbody2D.AddForce (new Vector2 (speed / 1.25f, speed / 1.25f));
 								} else {
 										delay -= Time.deltaTime;
 								}
@@ -118,7 +118,7 @@ public class Movement : MonoBehaviour {
 								this.GetComponent<Animator> ().Play ("WalkRight");
 						} else if (hori == 1 && vert == -1) {
 								if (delay <= 0) {
-										rigidbody2D.AddForce (new Vector2 (speed / 2, -speed / 2));
+										rigidbody2D.AddForce (new Vector2 (speed / 1.25f, -speed / 1.25f));
 								} else {
 										delay -= Time.deltaTime;
 								}
@@ -126,7 +126,7 @@ public class Movement : MonoBehaviour {
 								this.GetComponent<Animator> ().Play ("WalkRight");
 						} else if (hori == -1 && vert == 1) {
 								if (delay <= 0) {
-										rigidbody2D.AddForce (new Vector2 (-speed / 2, speed / 2));
+										rigidbody2D.AddForce (new Vector2 (-speed / 1.25f, speed / 1.25f));
 								} else {
 										delay -= Time.deltaTime;
 								}
@@ -134,7 +134,7 @@ public class Movement : MonoBehaviour {
 								this.GetComponent<Animator> ().Play ("WalkLeft");
 						} else if (hori == -1 && vert == -1) {
 								if (delay <= 0) {
-										rigidbody2D.AddForce (new Vector2 (-speed / 2, -speed / 2));
+										rigidbody2D.AddForce (new Vector2 (-speed / 1.25f, -speed / 1.25f));
 								} else {
 										delay -= Time.deltaTime;
 								}
@@ -150,7 +150,6 @@ public class Movement : MonoBehaviour {
 								this.GetComponent<Animator> ().Play ("WalkUp");
 						} else if (vert == -1 && (hori != 1 && hori != -1)) {
 								if (delay <= 0) {
-					
 										rigidbody2D.AddForce (new Vector2 (0, -speed));
 								} else {
 										delay -= Time.deltaTime;

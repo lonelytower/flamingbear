@@ -14,7 +14,8 @@ public class EnemyAI : MonoBehaviour {
 	};
 
 	public bool moveable = true;
-	public float walkspeed;
+	public bool awake = false;
+	public float walkSpeed;
 	public float attackDelay;
 	private float untilLastAttack = 0f;
 	private GameObject targetPlayer;
@@ -28,7 +29,7 @@ public class EnemyAI : MonoBehaviour {
 			this.renderer.material.color = Color.green;
 		}
 		state = AIState.Idle;
-		targetPlayer = GameObject.FindGameObjectWithTag ("Player");
+		//targetPlayer = GameObject.FindGameObjectWithTag ("Player");
 	}
 
 	private void WalkTowards(GameObject entity)
@@ -60,9 +61,13 @@ public class EnemyAI : MonoBehaviour {
 				}
 			}
 			if(Vector3.Distance(this.transform.position,entity.transform.position)>AttackRange){
-				this.transform.position = Vector3.MoveTowards (this.transform.position, entity.transform.position, walkspeed * Time.deltaTime);
+				this.transform.position = Vector3.MoveTowards (this.transform.position, entity.transform.position, walkSpeed * Time.deltaTime);
+			} else {
+				this.rigidbody2D.velocity = Vector3.zero;
 			}
-			//this.rigidbody2D.velocity = new Vector3(direction.x,direction.y,direction.z);
+
+		} else {
+			this.rigidbody2D.velocity = Vector3.zero;
 		}
         // When we have a floor, I'll make it follow the floor. For now, the sky is the limit.
 
@@ -105,6 +110,7 @@ public class EnemyAI : MonoBehaviour {
 			this.GetComponent<Animator>().Play("AttackRight");
 		}
 		moveable = false;
+		this.rigidbody2D.velocity = Vector3.zero;
 		entity.GetComponent<Stats>().health -= this.GetComponent<Stats>().damage;
 		if(this.name.Contains("Curse")){
 			if(Random.Range(1,100)<60){
@@ -139,22 +145,25 @@ public class EnemyAI : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		untilLastAttack -= Time.deltaTime;
-
-		if (GetDistanceFromEntity(targetPlayer) < AttackRange)
-		{
-            if (untilLastAttack <= 0)
+		if(targetPlayer != null){
+			if (GetDistanceFromEntity(targetPlayer) < AttackRange)
 			{
-				StartCoroutine(AttackEntity(targetPlayer,this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length));
-				untilLastAttack = attackDelay;
+				this.rigidbody2D.velocity = Vector3.zero;
+	            if (untilLastAttack <= 0)
+				{
+					StartCoroutine(AttackEntity(targetPlayer,this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length));
+					untilLastAttack = attackDelay;
+				}
 			}
-		}
-		else 
-		{
-			WalkTowards (targetPlayer);
+			else 
+			{
+				WalkTowards (targetPlayer);
+			}
 		}
 	}
 
 	public void setTarget(GameObject newTarget){
+		awake = true;
 		targetPlayer = newTarget;
 	}
 }
