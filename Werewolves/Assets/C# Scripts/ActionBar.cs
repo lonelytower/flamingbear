@@ -25,12 +25,41 @@ public class ActionBar : MonoBehaviour {
 		}
 		if(Input.GetKeyDown(KeyCode.Mouse1)){
 
-
 			Vector2 mouseVector = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			if(actionBarEquipSlots[0].collider2D.OverlapPoint(mouseVector)){
+				bool twoHanded = false;
+				if(actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite!=null){
+					tempItem = Resources.Load("Items/"+actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite.name) as GameObject;
+					twoHanded = tempItem.GetComponent<WeaponStats>().twoHanded;
+				}
+				Sprite tempSprite;
+				foreach(GameObject slot in returnActionBarList(false)){
+					if(slot.name!=actionBarEquipSlots[0].name&&slot.GetComponent<SpriteRenderer>().sprite == null){
+						if(twoHanded){
+							actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite = null;
+						}
+						slot.GetComponent<SpriteRenderer>().sprite = actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite;
+						actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite = null;
+					}
+				}
 				//Right click on equipSlot1
 			}
 			if(actionBarEquipSlots[1].collider2D.OverlapPoint(mouseVector)){
+				bool twoHanded = false;
+				if(actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite!=null){
+					tempItem = Resources.Load("Items/"+actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite.name) as GameObject;
+					twoHanded = tempItem.GetComponent<WeaponStats>().twoHanded;
+				}
+				Sprite tempSprite;
+				foreach(GameObject slot in returnActionBarList(false)){
+					if(slot.name!=actionBarEquipSlots[1].name&&slot.GetComponent<SpriteRenderer>().sprite == null){
+						if(twoHanded){
+							actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite = null;
+						}
+						slot.GetComponent<SpriteRenderer>().sprite = actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite;
+						actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite = null;
+					}
+				}
 				//Right click on equipSlot2
 			}
 			if(actionBarSlots[0].collider2D.OverlapPoint(mouseVector)){
@@ -81,13 +110,14 @@ public class ActionBar : MonoBehaviour {
 	public bool addItemToBar(GameObject itemToAdd){
 		bool addedToBar = false;
 		foreach(GameObject slot in actionBarSlots){
-			if(slot.GetComponent<SpriteRenderer>().sprite !=null){
-				if(slot.GetComponent<SpriteRenderer>().sprite.name==itemToAdd.name){
-					//increase count if stackable item, else repair/replace?
-					addedToBar = true;
-					break;
-				}
-			} else if (slot.GetComponent<SpriteRenderer>().sprite ==null){
+//			if(slot.GetComponent<SpriteRenderer>().sprite !=null){
+//				if(slot.GetComponent<SpriteRenderer>().sprite.name==itemToAdd.name){
+//					//increase count if stackable item, else repair/replace?
+//					addedToBar = true;
+//					break;
+//				}
+//			} else 
+		if (slot.GetComponent<SpriteRenderer>().sprite ==null){
 				slot.GetComponent<SpriteRenderer>().sprite = Resources.Load("Sprites/Equipment/" + itemToAdd.name, typeof(Sprite)) as Sprite;
 				addedToBar = true;
 				break;
@@ -104,27 +134,45 @@ public class ActionBar : MonoBehaviour {
 	}
 
 	void actionBarTrigger(int slot){
+		GameObject tempItem2 = null;
 		if(actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite!=null){
 			tempItem = Resources.Load("Items/"+actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite.name) as GameObject;
 			if(actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite!=null){
+				tempItem2 = Resources.Load("Items/"+actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite.name) as GameObject;
+			}
+			if(actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite!=null){
+				if(tempItem2.GetComponent<WeaponStats>().twoHanded == true){
+					actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite = null;
+				} else {
+
+				}
 				tempSprite = actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite;
 				actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite=actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite;
 				if(tempItem.GetComponent<WeaponStats>().twoHanded == true){
 					actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite;
-				} else {
 					actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=null;
+				} else {
+					if(actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite!=null&&tempItem2.GetComponent<WeaponStats>().twoHanded == false){
+						actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite = actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite;
+						actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite = null;
+					} else {
+						actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite = tempSprite;
+					}
 				}
-				actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite = tempSprite;
 			} else {
 				if(tempItem.GetComponent<WeaponStats>().twoHanded == true){
 					actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite=actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite;
 					actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite;
 					actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite = null;
 				} else if (tempItem.GetComponent<WeaponStats>().twoHanded == false){
+					if(actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite!=null&&tempItem2.GetComponent<WeaponStats>().twoHanded == false){
+						actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite;
+						actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite = null;
+					} else {
 					actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite=actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite;
 					actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite = null;
+					}
 				}
-
 			}
 			GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().weaponSystemEntity.newEquippedItem();
 		}
