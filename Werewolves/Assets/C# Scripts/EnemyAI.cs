@@ -61,7 +61,7 @@ public class EnemyAI : MonoBehaviour {
 				}
 			}
 			if(Vector3.Distance(this.transform.position,entity.transform.position)>AttackRange){
-				this.transform.position = Vector3.MoveTowards (this.transform.position, entity.transform.position, walkSpeed * Time.deltaTime);
+				this.transform.position = Vector3.MoveTowards(this.transform.position, entity.transform.position, walkSpeed * Time.deltaTime);
 			} else {
 				this.rigidbody2D.velocity = Vector3.zero;
 			}
@@ -110,7 +110,6 @@ public class EnemyAI : MonoBehaviour {
 			this.GetComponent<Animator>().Play("AttackRight");
 		}
 		moveable = false;
-		this.rigidbody2D.velocity = Vector3.zero;
 		entity.GetComponent<Stats>().health -= this.GetComponent<Stats>().damage;
 		if(this.name.Contains("Curse")){
 			if(Random.Range(1,100)<60){

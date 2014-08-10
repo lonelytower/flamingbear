@@ -47,6 +47,8 @@ public class WeaponSystem : MonoBehaviour {
 //		}
 		if(Input.GetAxis("Fire1")>0){ //Left Control and left mouse button, remap latter
 			Vector2 mouseVector = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+			Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+			RaycastHit2D mouseHit = Physics2D.GetRayIntersection(mouseRay,Mathf.Infinity);
 			bool attack = true;
 			foreach(GameObject slot in GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(false)){
 				if(slot.collider2D.OverlapPoint(mouseVector)){
@@ -58,7 +60,17 @@ public class WeaponSystem : MonoBehaviour {
 					attack = false;
 				}
 			}
-			if(attack){
+			foreach(GameObject merchant in GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().NPCS){
+				if(mouseHit.collider.tag.Contains("Merch")){
+					attack = false;
+				}
+				if(merchant.tag.Contains("Merch")){
+					if(merchant.collider2D.OverlapPoint(mouseVector)){
+						attack = false;
+					}
+				}
+			}
+			if(attack==true){
 				if(delayCount<=0){
 					delayCount = delay;
 					if(melee){
@@ -67,6 +79,7 @@ public class WeaponSystem : MonoBehaviour {
 						GameObject projectileObj = null;
 						Vector2 spawnPosition;
 						spawnPosition = mouseVector - new Vector2(this.transform.position.x,this.transform.position.y);
+						spawnPosition = spawnPosition.normalized;
 						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/Swipe"),this.transform.position + new Vector3(spawnPosition.normalized.x,spawnPosition.normalized.y,0),this.transform.rotation) as GameObject;
 						projectileObj.transform.LookAt(this.transform.position);
 						projectileObj.transform.rotation = Quaternion.Euler(new Vector3(0,0,projectileObj.transform.eulerAngles.x));
@@ -135,6 +148,7 @@ public class WeaponSystem : MonoBehaviour {
 
 						
 						spawnPosition = mouseVector - new Vector2(this.transform.position.x,this.transform.position.y);
+						spawnPosition = spawnPosition.normalized;
 						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/ProjectileBase"),this.transform.position + new Vector3(spawnPosition.normalized.x,spawnPosition.normalized.y,0),this.transform.rotation) as GameObject;
 						projectileObj.GetComponent<Projectile>().flightDirection = spawnPosition;
 						//projectileObj.GetComponent<Projectile>().direction=this.GetComponent<Movement>().direction;
@@ -149,40 +163,69 @@ public class WeaponSystem : MonoBehaviour {
 	IEnumerator launchMeleeAttack(float delay){
 		int direction = 0; //1 = up 2 = down 3 = left 4 = right
 		AnimatorStateInfo currentAnim;
-		currentAnim = this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0);
-		if(currentAnim.IsName("WalkUp") == true){
-			direction = 1;
-			this.GetComponent<Animator>().Play("AttackUp");
-		} else if (currentAnim.IsName("WalkDown") == true){
-			direction = 2;
-			this.GetComponent<Animator>().Play("AttackDown");
-
-		} else if (currentAnim.IsName("WalkLeft") == true){
-			direction = 3;
-			this.GetComponent<Animator>().Play("AttackLeft");
-
-		} else if (currentAnim.IsName("WalkRight") == true){
-			direction = 4;
-			this.GetComponent<Animator>().Play("AttackRight");
-
-		}
+		float mouseX =  Input.mousePosition.x/Screen.width;
+		float mouseY =  Input.mousePosition.y/Screen.height;
 		this.GetComponent<Movement>().moveable = false;
-		yield return new WaitForSeconds(delay);
+		if(Input.GetAxis("Fire1")>0){
+			if(mouseX+mouseY >= 1&&mouseX>mouseY&&mouseX>0.5f){
+				direction = 4;
+				if(this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("AttackRight")==false){
+					this.GetComponent<Animator> ().Play ("AttackRight");
+				}
+			} 
+			if(mouseX+mouseY<1&&mouseX<mouseY&&mouseX<0.5f) {
+				direction = 3;
+				if(this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("AttackLeft")==false){
+					this.GetComponent<Animator> ().Play ("AttackLeft");
+				}
+			}
+			if(mouseX+mouseY>=1&&mouseY>mouseX&&mouseY>0.5f){
+				direction = 1;
+				if(this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("AttackUp")==false){
+					this.GetComponent<Animator> ().Play ("AttackUp");
+				}
+			}
+			if(mouseX+mouseY<1&&mouseY<mouseX&&mouseY<0.5f){
+				direction = 2;
+				if(this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("AttackDown")==false){
+						this.GetComponent<Animator> ().Play ("AttackDown");
+					}
+			}
+		}
+		currentAnim = this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0);
+//		if(currentAnim.IsName("WalkUp") == true){
+//			direction = 1;
+//			this.GetComponent<Animator>().Play("AttackUp");
+//		} else if (currentAnim.IsName("WalkDown") == true){
+//			direction = 2;
+//			this.GetComponent<Animator>().Play("AttackDown");
+//
+//		} else if (currentAnim.IsName("WalkLeft") == true){
+//			direction = 3;
+//			this.GetComponent<Animator>().Play("AttackLeft");
+//
+//		} else if (currentAnim.IsName("WalkRight") == true){
+//			direction = 4;
+//			this.GetComponent<Animator>().Play("AttackRight");
+//
+//		}
+		this.GetComponent<Movement>().moveable = false;
+		yield return new WaitForSeconds(this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
 		switch(direction){
-		case(1):
-			this.GetComponent<Animator>().Play("WalkUp");
-			break;
-		case(2):
-			this.GetComponent<Animator>().Play("WalkDown");
-			break;
-		case(3):
-			this.GetComponent<Animator>().Play("WalkLeft");
-			break;
-		case(4):
-			this.GetComponent<Animator>().Play("WalkRight");
-			break;
-		default:
-			break;
+			case(1):
+				this.GetComponent<Animator>().Play("WalkUp");
+				break;
+			case(2):
+				this.GetComponent<Animator>().Play("WalkDown");
+				break;
+			case(3):
+				this.GetComponent<Animator>().Play("WalkLeft");
+				break;
+			case(4):
+				this.GetComponent<Animator>().Play("WalkRight");
+				break;
+			default:
+				break;
 		}
 		this.GetComponent<Movement>().moveable = true;
 	}

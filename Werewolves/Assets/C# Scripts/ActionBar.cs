@@ -153,8 +153,9 @@ public class ActionBar : MonoBehaviour {
 					actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=null;
 				} else {
 					if(actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite!=null&&tempItem2.GetComponent<WeaponStats>().twoHanded == false){
+						tempSprite = actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite;
 						actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite = actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite;
-						actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite = null;
+						actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite = tempSprite;
 					} else {
 						actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite = tempSprite;
 					}
@@ -166,11 +167,12 @@ public class ActionBar : MonoBehaviour {
 					actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite = null;
 				} else if (tempItem.GetComponent<WeaponStats>().twoHanded == false){
 					if(actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite!=null&&tempItem2.GetComponent<WeaponStats>().twoHanded == false){
+						tempSprite = actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite;
 						actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite;
-						actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite = null;
+						actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite = tempSprite;
 					} else {
-					actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite=actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite;
-					actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite = null;
+						actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite=actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite;
+						actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite = null;
 					}
 				}
 			}

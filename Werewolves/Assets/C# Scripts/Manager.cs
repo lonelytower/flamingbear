@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 using System.Collections;
 
 public class Manager : MonoBehaviour {
@@ -6,6 +7,7 @@ public class Manager : MonoBehaviour {
 
 	public ActionBar actionBarEntity;
 	public WeaponSystem weaponSystemEntity;
+	public List<GameObject> NPCS = new List<GameObject>();
 	// Use this for initialization
 	void Start () {
 		actionBarEntity = GameObject.Find("ActionBar").GetComponent<ActionBar>();

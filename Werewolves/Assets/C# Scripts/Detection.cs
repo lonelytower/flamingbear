@@ -29,11 +29,31 @@ public class Detection : MonoBehaviour {
 		if(collision.gameObject.tag=="Enemy"){
 			collision.gameObject.GetComponent<EnemyAI>().setTarget(this.transform.parent.gameObject);
 		}
+		if(collision.gameObject.tag == "Ally"){
+			collision.gameObject.GetComponent<AllyAI>().leader = this.gameObject.transform.parent.gameObject;
+			collision.gameObject.GetComponent<AllyAI>().setPriority(1);
+		}
+	}
+	void OnCollisionExit2D(Collision2D collision){
+		if(collision.gameObject.tag == "Ally"){
+			collision.gameObject.GetComponent<AllyAI>().leader = this.gameObject.transform.parent.gameObject;
+			collision.gameObject.GetComponent<AllyAI>().setPriority(1);
+		}
 	}
 
 	void OnTriggerEnter2D(Collider2D collider){
 		if(collider.gameObject.tag=="Enemy"){
 			collider.gameObject.GetComponent<EnemyAI>().setTarget(this.transform.parent.gameObject);
+		}
+		if(collider.gameObject.tag == "Ally"&&collider.gameObject.name.Contains("Follower")){
+			collider.gameObject.GetComponent<AllyAI>().leader = this.gameObject.transform.parent.gameObject;
+			collider.gameObject.GetComponent<AllyAI>().setPriority(1);
+		}
+	}
+	void OnTriggerExit2D(Collider2D collider){
+		if(collider.gameObject.tag == "Ally"&&collider.gameObject.name.Contains("Follower")){
+			collider.gameObject.GetComponent<AllyAI>().leader = this.gameObject.transform.parent.gameObject;
+			collider.gameObject.GetComponent<AllyAI>().setPriority(1);
 		}
 	}
 

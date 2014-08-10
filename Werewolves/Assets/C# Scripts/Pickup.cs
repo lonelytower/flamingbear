@@ -25,15 +25,17 @@ public class Pickup : MonoBehaviour {
 //	}
 
 	void OnTriggerStay2D(Collider2D collisionObject){
-		if(collisionObject.GetComponent<ItemBehaviour>().delay<=0){
-			if(collisionObject.gameObject.tag=="Pickups"){
-				if(GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.addItemToBar(collisionObject.gameObject)==true){
-					Destroy(collisionObject.gameObject);
-				} else {
+		if(collisionObject.gameObject.tag=="Pickups"){
+			if(collisionObject.GetComponent<ItemBehaviour>().delay<=0){
+				if(collisionObject.gameObject.tag=="Pickups"){
+					if(GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.addItemToBar(collisionObject.gameObject)==true){
+						Destroy(collisionObject.gameObject);
+					} else {
 
+					}
 				}
-			}
 
+			}
 		}
 	}
 }
