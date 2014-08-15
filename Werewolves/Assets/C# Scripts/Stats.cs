@@ -17,7 +17,10 @@ public class Stats : MonoBehaviour {
 	void Update () {
 		if(health<=0){
 			if(this.tag == "Player"){
-				Application.LoadLevel("InitialTestScene");
+				if(cursed){
+					GameObject.Instantiate(Resources.Load("Characters/TestEnemy"),this.transform.position,this.transform.rotation);
+				}
+				GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().cursedDeath();
 			}
 			DestroyImmediate(this.gameObject);
 		}

@@ -16,4 +16,7 @@ public class CameraFollow : MonoBehaviour {
 		}
 	
 	}
+	public void Reassign(){
+		player = GameObject.FindGameObjectWithTag("Player");
+	}
 }

@@ -22,7 +22,9 @@ public class HealthDisplay : MonoBehaviour {
 			curseDelay -= Time.deltaTime;
 			if(curseDelay <=0){
 				curseDelay = 15;
-				GameObject.FindGameObjectWithTag("Player").GetComponent<Stats>().health -= 10;
+				if(GameObject.FindGameObjectWithTag("Player")!=null){
+					GameObject.FindGameObjectWithTag("Player").GetComponent<Stats>().health -= 10;
+				}
 			}
 			if(cursedBar.activeSelf==false){
 				cursedBar.SetActive(true);

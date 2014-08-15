@@ -12,9 +12,11 @@ public class StaminaDisplay : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		playerStamina = GameObject.FindGameObjectWithTag("Player").GetComponent<Stats>().stamina;
-		if(this.name.Contains("StaminaBar")){
-			this.transform.localScale = new Vector3 (playerStamina/100,1,0);
+		if(GameObject.FindGameObjectWithTag("Player")!=null){
+			playerStamina = GameObject.FindGameObjectWithTag("Player").GetComponent<Stats>().stamina;
+			if(this.name.Contains("StaminaBar")){
+				this.transform.localScale = new Vector3 (playerStamina/100,1,0);
+			}
 		}
 	}
 }
