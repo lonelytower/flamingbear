@@ -16,15 +16,18 @@ public class UI : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if(Input.GetKeyDown(KeyCode.Space)){
+			dialogueOpen = false;
+		}
 	
 	}
 
 	void OnGUI (){
 		if(dialogueOpen == false){
-			Time.timeScale = 1;
+		//	Time.timeScale = 1;
 		} else {
 			DialogueWindow = GUILayout.Window(1,DialogueWindow, DialogueFunction,"");
-			Time.timeScale = 0;
+		//	Time.timeScale = 0;
 		}
 	}
 
@@ -32,12 +35,10 @@ public class UI : MonoBehaviour {
 		GUILayout.BeginHorizontal();
 		GUILayout.BeginVertical();
 		GUILayout.Label("<b><size=20>"+speakerName+"</size></b>");
-		GUILayout.Label(dialogue);
+		GUILayout.Label("<size=16>"+dialogue+"</size>");
 
 		GUILayout.EndVertical();
-		if(GUILayout.Button("<b><size=20>Continue</size></b>")){
-			dialogueOpen = false;
-		}
+		GUILayout.Label("<size=12>Press Space to continue</size>");
 		GUILayout.EndHorizontal();
 	}
 }
