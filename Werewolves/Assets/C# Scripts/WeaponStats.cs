@@ -9,14 +9,20 @@ public class WeaponStats : MonoBehaviour {
 	public bool ranged;
 	public bool twoHanded;
 	public float projectileVelocity;
+	public int maxDurability;
+	public int durability;
 
 	// Use this for initialization
 	void Start () {
-	
+		durability = maxDurability;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		if(durability<=0){
+			this.GetComponent<ItemBehaviour>().quantity -= 1;
+			durability = maxDurability;
+		}
 	
 	}
 }

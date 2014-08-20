@@ -20,9 +20,6 @@ public class ActionBar : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetKeyDown(KeyCode.F)){
-			actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite=actionBarSlots[0].GetComponent<SpriteRenderer>().sprite;
-		}
 		if(Input.GetKeyDown(KeyCode.Mouse1)){
 
 			Vector2 mouseVector = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -137,46 +134,56 @@ public class ActionBar : MonoBehaviour {
 		GameObject tempItem2 = null;
 		if(actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite!=null){
 			tempItem = Resources.Load("Items/"+actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite.name) as GameObject;
-			if(actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite!=null){
-				tempItem2 = Resources.Load("Items/"+actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite.name) as GameObject;
-			}
-			if(actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite!=null){
-				if(tempItem2.GetComponent<WeaponStats>().twoHanded == true){
-					actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite = null;
-				} else {
+			if(tempItem.GetComponent<ItemBehaviour>().weapon==true){
+				if(actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite!=null){
+					tempItem2 = Resources.Load("Items/"+actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite.name) as GameObject;
+				}
+				if(actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite!=null){ //There is an item in the first equip slot
+					if(tempItem2.GetComponent<WeaponStats>().twoHanded == true){ //And the item is two handed
+						actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite = null;
+					} else {
 
-				}
-				tempSprite = actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite;
-				actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite=actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite;
-				if(tempItem.GetComponent<WeaponStats>().twoHanded == true){
-					actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite;
-					actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=null;
+					}
+					tempSprite = actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite;
+					actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite=actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite;
+					if(tempItem.GetComponent<WeaponStats>().twoHanded == true){ //Item being equipped is two handed
+						actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite;
+						actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite=tempSprite;
+					} else { //Item being equipped is one handed
+						if(actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite!=null&&tempItem2.GetComponent<WeaponStats>().twoHanded == false){
+							tempSprite = actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite;
+							actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite = actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite;
+							actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite = tempSprite;
+						} else {
+							actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite = tempSprite;
+						}
+					}
 				} else {
-					if(actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite!=null&&tempItem2.GetComponent<WeaponStats>().twoHanded == false){
-						tempSprite = actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite;
-						actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite = actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite;
-						actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite = tempSprite;
-					} else {
-						actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite = tempSprite;
+					if(tempItem.GetComponent<WeaponStats>().twoHanded == true){
+						actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite=actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite;
+						actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite;
+						actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite = null;
+					} else if (tempItem.GetComponent<WeaponStats>().twoHanded == false){
+						if(actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite!=null&&tempItem2.GetComponent<WeaponStats>().twoHanded == false){
+							tempSprite = actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite;
+							actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite;
+							actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite = tempSprite;
+						} else {
+							actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite=actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite;
+							actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite = null;
+						}
 					}
 				}
-			} else {
-				if(tempItem.GetComponent<WeaponStats>().twoHanded == true){
-					actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite=actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite;
-					actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite;
-					actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite = null;
-				} else if (tempItem.GetComponent<WeaponStats>().twoHanded == false){
-					if(actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite!=null&&tempItem2.GetComponent<WeaponStats>().twoHanded == false){
-						tempSprite = actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite;
-						actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite;
-						actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite = tempSprite;
-					} else {
-						actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite=actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite;
-						actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite = null;
+				GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().weaponSystemEntity.newEquippedItem();
+			} else { //If the activated item is a perishable
+				//Do the use stuff
+				if(tempItem.name == "Wolfsbane"){
+					if(GameObject.FindGameObjectWithTag("Player").GetComponent<Stats>().cursed == true){
+						GameObject.FindGameObjectWithTag("Player").GetComponent<Stats>().cursed = false;
+						actionBarSlots[slot-1].GetComponent<ItemBehaviour>().quantity -= 1;
 					}
 				}
 			}
-			GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().weaponSystemEntity.newEquippedItem();
 		}
 	}
 }

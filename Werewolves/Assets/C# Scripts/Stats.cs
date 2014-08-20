@@ -22,6 +22,9 @@ public class Stats : MonoBehaviour {
 				}
 				GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().cursedDeath();
 			}
+			foreach(GameObject spawner in GameObject.FindGameObjectsWithTag("Respawner")){
+				spawner.GetComponent<RespawnEnemies>().removeEnemy(this.gameObject);
+			}
 			DestroyImmediate(this.gameObject);
 		}
 		if(stamina<100){
@@ -35,8 +38,10 @@ public class Stats : MonoBehaviour {
 			if(collision.gameObject.tag=="Projectile"){
 				if(collision.gameObject.GetComponent<Projectile>().ally == true){
 					if(collision.gameObject.GetComponent<Projectile>().damageType == 0){
+						StartCoroutine(onHit(collision.gameObject.GetComponent<Projectile>().damage,true));
 						health -= collision.gameObject.GetComponent<Projectile>().damage*2;
 					} else {
+						StartCoroutine(onHit(collision.gameObject.GetComponent<Projectile>().damage,false));
 						health -= collision.gameObject.GetComponent<Projectile>().damage;
 					}
 					Destroy(collision.gameObject);
@@ -46,8 +51,10 @@ public class Stats : MonoBehaviour {
 			if(collision.gameObject.tag=="Projectile"){
 				if(collision.gameObject.GetComponent<Projectile>().ally == false){
 					if(collision.gameObject.GetComponent<Projectile>().damageType == 0){
+						StartCoroutine(onHit(collision.gameObject.GetComponent<Projectile>().damage,true));
 						health -= collision.gameObject.GetComponent<Projectile>().damage*2;
 					} else {
+						StartCoroutine(onHit(collision.gameObject.GetComponent<Projectile>().damage,false));
 						health -= collision.gameObject.GetComponent<Projectile>().damage;
 					}
 					this.GetComponent<Movement>().TakeDamage (collision.gameObject.transform.position);
@@ -55,5 +62,16 @@ public class Stats : MonoBehaviour {
 				}
 			}
 		}
+	}
+
+	public IEnumerator onHit (int damage, bool doubleDamage){
+		GameObject hitNumber = Resources.Load("Sprites/Effects/number") as GameObject;
+		hitNumber.GetComponent<SpriteRenderer>().sprite = Resources.Load("Sprites/Effects/"+damage.ToString(), typeof(Sprite)) as Sprite;
+		hitNumber.GetComponent<SpriteRenderer>().color = Color.white;
+		GameObject.Instantiate(hitNumber,this.transform.position,Quaternion.identity);
+		Color originalColor = this.renderer.material.color;
+		this.renderer.material.color = Color.red;
+		yield return new WaitForSeconds(0.5f);
+		this.renderer.material.color = originalColor;
 	}
 }

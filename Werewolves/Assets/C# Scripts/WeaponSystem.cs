@@ -61,8 +61,10 @@ public class WeaponSystem : MonoBehaviour {
 				}
 			}
 			foreach(GameObject merchant in GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().NPCS){
-				if(mouseHit.collider.tag.Contains("Merch")){
-					attack = false;
+				if(mouseHit.collider!=null){
+					if(mouseHit.collider.tag.Contains("Merch")){
+						attack = false;
+					}
 				}
 				if(merchant.tag.Contains("Merch")){
 					if(merchant.collider2D.OverlapPoint(mouseVector)){
@@ -83,7 +85,6 @@ public class WeaponSystem : MonoBehaviour {
 						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/Swipe"),this.transform.position + new Vector3(spawnPosition.normalized.x,spawnPosition.normalized.y,0),this.transform.rotation) as GameObject;
 						projectileObj.transform.LookAt(this.transform.position);
 						projectileObj.transform.rotation = Quaternion.Euler(new Vector3(0,0,projectileObj.transform.eulerAngles.x));
-					//	Debug.Break();
 //						switch(this.GetComponent<Movement>().direction){
 //						case(1):
 //							projectileObj = GameObject.Instantiate(Resources.Load("Weapons/Swipe"),this.transform.position+(new Vector3(0,0.3f,0)),this.transform.rotation) as GameObject;
@@ -154,6 +155,9 @@ public class WeaponSystem : MonoBehaviour {
 						//projectileObj.GetComponent<Projectile>().direction=this.GetComponent<Movement>().direction;
 						projectileObj.GetComponent<Projectile>().velocity = equippedItem.GetComponent<WeaponStats>().projectileVelocity; //Set it to the weapon value.
 						//projectileObj.GetComponent<Projectile>().damage = 5;
+					}
+					if(equippedItem!=null){
+						equippedItem.GetComponent<WeaponStats>().durability-=1;
 					}
 				}
 			}

@@ -4,6 +4,8 @@ using System.Collections;
 public class ItemBehaviour : MonoBehaviour {
 
 	public float delay = 2.0f;
+	public bool weapon = false;
+	public int quantity = 1;
 
 	// Use this for initialization
 	void Start () {
@@ -14,6 +16,9 @@ public class ItemBehaviour : MonoBehaviour {
 	void Update () {
 		if(delay > 0){
 			delay = delay - Time.deltaTime;
+		}
+		if(quantity<=0){
+			Destroy(this.gameObject);
 		}
 	}
 }
