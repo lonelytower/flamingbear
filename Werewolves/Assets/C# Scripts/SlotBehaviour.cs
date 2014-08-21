@@ -4,6 +4,8 @@ using System.Collections;
 public class SlotBehaviour : MonoBehaviour {
 
 	Vector3 originalPosition;
+	int itemDurability;
+	public int itemQuantity = 1;
 
 	// Use this for initialization
 	void Start () {
@@ -12,7 +14,14 @@ public class SlotBehaviour : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
+		if(this.GetComponent<SpriteRenderer>().sprite!=null){
+			this.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().enabled = true;
+		} else {
+			this.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().enabled = false;
+		}
+		if(itemQuantity<=0){
+			this.GetComponent<SpriteRenderer>().sprite = null;
+		}
 	}
 
 	void OnMouseDrag(){
@@ -37,64 +46,66 @@ public class SlotBehaviour : MonoBehaviour {
 					switched = true;
 				}
 			}
-			foreach(GameObject slot in GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)){
-				GameObject tempItem2 = Resources.Load("Items/"+this.GetComponent<SpriteRenderer>().sprite.name) as GameObject;// the current gameobjects sprite
-				bool twoHanded2 = tempItem2.GetComponent<WeaponStats>().twoHanded;
-				if(slot.renderer.bounds.Intersects(this.renderer.bounds)&&slot.name!=this.name){
-					if(slot.GetComponent<SpriteRenderer>().sprite == null){
-						if(slot == GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[0]){
-							if(twoHanded2){
-								if(GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[1].GetComponent<SpriteRenderer>().sprite == null){
+			GameObject tempItem2 = Resources.Load("Items/"+this.GetComponent<SpriteRenderer>().sprite.name) as GameObject;// the current gameobjects sprite
+			if(tempItem2.GetComponent<ItemBehaviour>().weapon == true){
+				foreach(GameObject slot in GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)){
+					bool twoHanded2 = tempItem2.GetComponent<WeaponStats>().twoHanded;
+					if(slot.renderer.bounds.Intersects(this.renderer.bounds)&&slot.name!=this.name){
+						if(slot.GetComponent<SpriteRenderer>().sprite == null){
+							if(slot == GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[0]){
+								if(twoHanded2){
+									if(GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[1].GetComponent<SpriteRenderer>().sprite == null){
+										slot.GetComponent<SpriteRenderer>().sprite = this.GetComponent<SpriteRenderer>().sprite;
+										GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[1].GetComponent<SpriteRenderer>().sprite = this.GetComponent<SpriteRenderer>().sprite;
+										this.GetComponent<SpriteRenderer>().sprite = null;
+									}
+								} else {
 									slot.GetComponent<SpriteRenderer>().sprite = this.GetComponent<SpriteRenderer>().sprite;
-									GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[1].GetComponent<SpriteRenderer>().sprite = this.GetComponent<SpriteRenderer>().sprite;
 									this.GetComponent<SpriteRenderer>().sprite = null;
 								}
 							} else {
-								slot.GetComponent<SpriteRenderer>().sprite = this.GetComponent<SpriteRenderer>().sprite;
-								this.GetComponent<SpriteRenderer>().sprite = null;
+								if(twoHanded2){
+									if(GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[0].GetComponent<SpriteRenderer>().sprite == null){
+										slot.GetComponent<SpriteRenderer>().sprite = this.GetComponent<SpriteRenderer>().sprite;
+										GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[0].GetComponent<SpriteRenderer>().sprite = this.GetComponent<SpriteRenderer>().sprite;
+										this.GetComponent<SpriteRenderer>().sprite = null;
+									}
+								} else {
+									slot.GetComponent<SpriteRenderer>().sprite = this.GetComponent<SpriteRenderer>().sprite;
+									this.GetComponent<SpriteRenderer>().sprite = null;
+								}
 							}
+						switched = true;
+						this.transform.localPosition = originalPosition;
+						break;
 						} else {
-							if(twoHanded2){
-								if(GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[0].GetComponent<SpriteRenderer>().sprite == null){
-									slot.GetComponent<SpriteRenderer>().sprite = this.GetComponent<SpriteRenderer>().sprite;
-									GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[0].GetComponent<SpriteRenderer>().sprite = this.GetComponent<SpriteRenderer>().sprite;
-									this.GetComponent<SpriteRenderer>().sprite = null;
-								}
-							} else {
-								slot.GetComponent<SpriteRenderer>().sprite = this.GetComponent<SpriteRenderer>().sprite;
-								this.GetComponent<SpriteRenderer>().sprite = null;
-							}
-						}
-					switched = true;
-					this.transform.localPosition = originalPosition;
-					break;
-					} else {
-						GameObject tempItem = Resources.Load("Items/"+slot.GetComponent<SpriteRenderer>().sprite.name) as GameObject; // the sprite of the slot you are transferring to
-						bool twoHanded = tempItem.GetComponent<WeaponStats>().twoHanded;
+							GameObject tempItem = Resources.Load("Items/"+slot.GetComponent<SpriteRenderer>().sprite.name) as GameObject; // the sprite of the slot you are transferring to
+							bool twoHanded = tempItem.GetComponent<WeaponStats>().twoHanded;
 
-						if(slot.renderer.bounds.Intersects(this.renderer.bounds)&&slot.name!=this.name){
-							tempSprite = slot.GetComponent<SpriteRenderer>().sprite;
-							if(twoHanded&&slot == GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[0]){
-								GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[0].GetComponent<SpriteRenderer>().sprite = this.GetComponent<SpriteRenderer>().sprite;
-								if(twoHanded2){
+							if(slot.renderer.bounds.Intersects(this.renderer.bounds)&&slot.name!=this.name){
+								tempSprite = slot.GetComponent<SpriteRenderer>().sprite;
+								if(twoHanded&&slot == GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[0]){
+									GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[0].GetComponent<SpriteRenderer>().sprite = this.GetComponent<SpriteRenderer>().sprite;
+									if(twoHanded2){
+										GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[1].GetComponent<SpriteRenderer>().sprite = this.GetComponent<SpriteRenderer>().sprite;
+									} else {
+										GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[1].GetComponent<SpriteRenderer>().sprite = null;
+									}
+
+								} else if (twoHanded&&slot == GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[1]){
 									GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[1].GetComponent<SpriteRenderer>().sprite = this.GetComponent<SpriteRenderer>().sprite;
-								} else {
-									GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[1].GetComponent<SpriteRenderer>().sprite = null;
+									if(twoHanded2){
+										GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[0].GetComponent<SpriteRenderer>().sprite = this.GetComponent<SpriteRenderer>().sprite;
+									} else {
+										GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[0].GetComponent<SpriteRenderer>().sprite = null;
+									}
 								}
-
-							} else if (twoHanded&&slot == GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[1]){
-								GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[1].GetComponent<SpriteRenderer>().sprite = this.GetComponent<SpriteRenderer>().sprite;
-								if(twoHanded2){
-									GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[0].GetComponent<SpriteRenderer>().sprite = this.GetComponent<SpriteRenderer>().sprite;
-								} else {
-									GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[0].GetComponent<SpriteRenderer>().sprite = null;
-								}
+								slot.GetComponent<SpriteRenderer>().sprite = this.GetComponent<SpriteRenderer>().sprite;
+								this.GetComponent<SpriteRenderer>().sprite = tempSprite;
+								this.transform.localPosition = originalPosition;
+								switched = true;
+								break;
 							}
-							slot.GetComponent<SpriteRenderer>().sprite = this.GetComponent<SpriteRenderer>().sprite;
-							this.GetComponent<SpriteRenderer>().sprite = tempSprite;
-							this.transform.localPosition = originalPosition;
-							switched = true;
-							break;
 						}
 					}
 				}

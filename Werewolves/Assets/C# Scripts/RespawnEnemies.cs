@@ -10,6 +10,7 @@ public class RespawnEnemies : MonoBehaviour {
 	float delay;
 	GameObject newSpawn;
 	public GameObject enemyToSpawn;
+	public bool onScreen = false;
 
 	// Use this for initialization
 	void Start () {
@@ -23,19 +24,32 @@ public class RespawnEnemies : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Enemies.Count<enemyNumbers){
-			if(delay<=0){
-				newSpawn = GameObject.Instantiate(enemyToSpawn,this.transform.position,Quaternion.identity) as GameObject;
-				newSpawn.name.Replace("(Clone)","");
-				Enemies.Add(newSpawn);
-				delay = spawnDelay;
+		if(!onScreen){
+			if(Enemies.Count<enemyNumbers){
+				if(delay<=0){
+					newSpawn = GameObject.Instantiate(enemyToSpawn,this.transform.position,Quaternion.identity) as GameObject;
+					newSpawn.name.Replace("(Clone)","");
+					Enemies.Add(newSpawn);
+					delay = spawnDelay;
+				}
+				delay -= Time.deltaTime;
 			}
-			delay -= Time.deltaTime;
 		}
 	}
 	public void removeEnemy(GameObject enemyToRemove){
 		if(Enemies.Contains(enemyToRemove)){
 			Enemies.Remove(enemyToRemove);
+		}
+	}
+
+	public void OnTriggerEnter2D(Collider2D collider){
+		if(collider.tag == "Player"){
+			onScreen = true;
+		}
+	}
+	public void OnTriggerExit2D(Collider2D collider){
+		if(collider.tag == "Player"){
+			onScreen = false;
 		}
 	}
 }

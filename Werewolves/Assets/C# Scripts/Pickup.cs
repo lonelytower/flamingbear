@@ -28,7 +28,12 @@ public class Pickup : MonoBehaviour {
 		if(collisionObject.gameObject.tag=="Pickups"){
 			if(collisionObject.GetComponent<ItemBehaviour>().delay<=0){
 				if(collisionObject.gameObject.tag=="Pickups"){
-					if(GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.addItemToBar(collisionObject.gameObject)==true){
+					GameObject slotObject;
+					slotObject = GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.addItemToBar(collisionObject.gameObject);
+					if(slotObject!=null){
+						if(collisionObject.GetComponent<ItemBehaviour>().weapon == true){
+							slotObject.gameObject.transform.GetChild(0).GetComponent<DurabilityDisplay>().newDurability(collisionObject.GetComponent<WeaponStats>().durability,collisionObject.GetComponent<WeaponStats>().maxDurability);
+						}
 						Destroy(collisionObject.gameObject);
 					} else {
 
