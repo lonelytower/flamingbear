@@ -17,10 +17,12 @@ public class Stats : MonoBehaviour {
 	void Update () {
 		if(health<=0){
 			if(this.tag == "Player"){
+				
+				GameObject enemy = null;
 				if(cursed){
-					GameObject.Instantiate(Resources.Load("Characters/TestEnemy"),this.transform.position,this.transform.rotation);
+					enemy = GameObject.Instantiate(Resources.Load("Characters/TestEnemy"),this.transform.position,this.transform.rotation) as GameObject;
 				}
-				GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().cursedDeath();
+				GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().cursedDeath(enemy);
 			}
 			foreach(GameObject spawner in GameObject.FindGameObjectsWithTag("Respawner")){
 				spawner.GetComponent<RespawnEnemies>().removeEnemy(this.gameObject);
@@ -72,6 +74,8 @@ public class Stats : MonoBehaviour {
 		Color originalColor = this.renderer.material.color;
 		this.renderer.material.color = Color.red;
 		yield return new WaitForSeconds(0.5f);
-		this.renderer.material.color = originalColor;
+		if(this!=null){
+			this.renderer.material.color = originalColor;
+		}
 	}
 }

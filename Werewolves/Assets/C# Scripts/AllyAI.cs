@@ -102,6 +102,8 @@ public class AllyAI : MonoBehaviour {
 			this.GetComponent<Animator>().Play("AttackRight");
 		}
 		moveable = false;
+		StartCoroutine(entity.GetComponent<Stats>().onHit(this.GetComponent<Stats>().damage,false));
+		//entity.GetComponent<Stats>().onHit(this.GetComponent<Stats>().damage,false);
 		entity.GetComponent<Stats>().health -= this.GetComponent<Stats>().damage;
 		if (entity.GetComponent<Movement> () != null) {
 			entity.GetComponent<Movement> ().TakeDamage (this.transform.position);

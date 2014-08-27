@@ -110,6 +110,7 @@ public class EnemyAI : MonoBehaviour {
 			this.GetComponent<Animator>().Play("AttackRight");
 		}
 		moveable = false;
+		StartCoroutine(entity.GetComponent<Stats>().onHit(this.GetComponent<Stats>().damage,false));
 		entity.GetComponent<Stats>().health -= this.GetComponent<Stats>().damage;
 		if(this.name.Contains("Curse")){
 			if(Random.Range(1,100)<60){

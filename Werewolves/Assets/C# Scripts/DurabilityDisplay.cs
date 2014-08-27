@@ -18,7 +18,6 @@ public class DurabilityDisplay : MonoBehaviour {
 	public void newDurability(int newDurability, int newMaxDurability){
 		durability = newDurability;
 		maxDurability = newMaxDurability;
-		Debug.Log(durability.ToString() + " out of " + maxDurability.ToString());
 	}
 	public void newDurability(Vector2 newValues){
 		durability = (int)newValues.x;

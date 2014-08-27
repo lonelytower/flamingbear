@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ItemBehaviour : MonoBehaviour {
 
-	public float delay = 2.0f;
+	public float delay = 0.5f;
 	public bool weapon = false;
 	public int quantity = 1;
 
