@@ -245,9 +245,15 @@ public class WeaponSystem : MonoBehaviour {
 	}
 
 	public void newEquippedItem(){
-		equippedItem = Resources.Load("Items/" + GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnEquippedItem(0).GetComponent<SpriteRenderer>().sprite.name) as GameObject;
+		if(GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnEquippedItem(0).GetComponent<SpriteRenderer>().sprite!=null){
+			equippedItem = Resources.Load("Items/" + GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnEquippedItem(0).GetComponent<SpriteRenderer>().sprite.name) as GameObject;
+		} else {
+			equippedItem = null;
+		}
 		if(GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnEquippedItem(1).GetComponent<SpriteRenderer>().sprite!= null){
 			equippedItem2 = Resources.Load("Items/" + GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnEquippedItem(1).GetComponent<SpriteRenderer>().sprite.name) as GameObject;
+		} else {
+			equippedItem2 = null;
 		}
 		if(equippedItem!=null){
 			if(equippedItem.GetComponent<WeaponStats>().ranged == true){
@@ -255,6 +261,8 @@ public class WeaponSystem : MonoBehaviour {
 			} else {
 				melee = true;
 			}
+		} else {
+			melee = true;
 		}
 		if(equippedItem!=null){
 			delayCount = equippedItem.GetComponent<WeaponStats>().delay;

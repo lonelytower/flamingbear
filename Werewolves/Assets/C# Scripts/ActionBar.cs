@@ -44,6 +44,7 @@ public class ActionBar : MonoBehaviour {
 
 					}
 				}
+				GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().weaponSystemEntity.newEquippedItem();
 			}
 			if(actionBarEquipSlots[1].collider2D.OverlapPoint(mouseVector)){ //Right click on equipSlot2
 				bool twoHanded = false;
@@ -67,6 +68,7 @@ public class ActionBar : MonoBehaviour {
 
 					}
 				}
+				GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().weaponSystemEntity.newEquippedItem();
 			}
 			if(actionBarSlots[0].collider2D.OverlapPoint(mouseVector)){
 				actionBarTrigger(1);
@@ -101,11 +103,7 @@ public class ActionBar : MonoBehaviour {
 
 
 	void OnMouseDown(){
-		if(name.Contains("Slot")){
-			if(this.GetComponent<SpriteRenderer>().sprite.name.Contains("wolfsbane")){
-				this.GetComponent<SpriteRenderer>().color = Color.red;
-			}
-		}
+
 	}
 	public GameObject returnEquippedItem(int slot){
 		if(actionBarEquipSlots[slot] != null){

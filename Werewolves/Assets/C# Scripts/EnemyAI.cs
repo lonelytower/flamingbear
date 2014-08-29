@@ -15,6 +15,7 @@ public class EnemyAI : MonoBehaviour {
 
 	public bool moveable = true;
 	public bool awake = false;
+	bool engaged = false;
 	public float walkSpeed;
 	public float attackDelay;
 	private float untilLastAttack = 0f;
@@ -80,7 +81,14 @@ public class EnemyAI : MonoBehaviour {
         // Let's pretend we have a walking animation or something. Probably won't use animations if we're using sprites anyway.
         
 	}
+	void WalkTowardsRandomPoint(){
+		Vector3 newPoint;
+		newPoint = new Vector3(this.transform.position.x+Random.Range(0.0f,0.1f),this.transform.position.y+Random.Range(0.0f,0.1f),this.transform.position.z);
+		if(engaged == false){
+			Vector3.MoveTowards(this.transform.position,newPoint,walkSpeed*Time.deltaTime);
+		}
 
+	}
 	private float GetDistanceFromEntity(GameObject entity)
 	{
 		if(entity!=null){
@@ -146,6 +154,7 @@ public class EnemyAI : MonoBehaviour {
 	void Update () {
 		untilLastAttack -= Time.deltaTime;
 		if(targetPlayer != null){
+			engaged = true;
 			if (GetDistanceFromEntity(targetPlayer) < AttackRange)
 			{
 				this.rigidbody2D.velocity = Vector3.zero;
@@ -159,6 +168,9 @@ public class EnemyAI : MonoBehaviour {
 			{
 				WalkTowards (targetPlayer);
 			}
+		} else {
+			engaged = false;
+			WalkTowardsRandomPoint();
 		}
 	}
 

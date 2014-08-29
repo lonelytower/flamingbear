@@ -39,6 +39,26 @@ public class Breakable : MonoBehaviour {
 			//Destroy(this.gameObject,0.2f);
 		}
 	}
+
+	void OnTriggerEnter2D(Collider2D collider){
+		if(collider.gameObject.tag == "Projectile"){
+			if(collider.gameObject.GetComponent<Projectile>().damageType == 1){
+				hp -= collider.gameObject.GetComponent<Projectile>().damage*2;
+			} else {
+				hp -= collider.gameObject.GetComponent<Projectile>().damage;
+			}
+			if(hp<=0){
+				broken = true;
+				if(this.GetComponent<ItemDrops>()!=false){
+					this.GetComponent<ItemDrops>().triggerDrop();
+				}
+			}
+			Destroy(collider.gameObject);
+			//change to breaking animation
+			//After animation delete and spawn any items from drop table
+			//Destroy(this.gameObject,0.2f);
+		}
+	}
 	public bool returnBroken(){
 		return broken;
 	}

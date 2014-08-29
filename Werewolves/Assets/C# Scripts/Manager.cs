@@ -10,7 +10,7 @@ public class Manager : MonoBehaviour {
 	public List<GameObject> NPCS = new List<GameObject>();
 	public bool gameoverCursed = false;
 	public float deathDelay = 5;
-	GameObject newEnemySpawned;
+	GameObject newEnemySpawned = null;
 	// Use this for initialization
 	void Start () {
 		actionBarEntity = GameObject.Find("ActionBar").GetComponent<ActionBar>();
@@ -25,10 +25,12 @@ public class Manager : MonoBehaviour {
 			if(deathDelay <=0){
 				deathDelay = 2;
 				foreach(GameObject slot in GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(false)){
-					GameObject droppedItem;
-					droppedItem = GameObject.Instantiate(Resources.Load("Items/" + slot.GetComponent<SpriteRenderer>().sprite.name),newEnemySpawned.transform.position, this.transform.rotation) as GameObject;
-					droppedItem.name = slot.GetComponent<SpriteRenderer>().sprite.name;
-					slot.GetComponent<SpriteRenderer>().sprite = null;
+					if(slot.GetComponent<SpriteRenderer>().sprite!=null){
+						GameObject droppedItem;
+						droppedItem = GameObject.Instantiate(Resources.Load("Items/" + slot.GetComponent<SpriteRenderer>().sprite.name),newEnemySpawned.transform.position, this.transform.rotation) as GameObject;
+						droppedItem.name = slot.GetComponent<SpriteRenderer>().sprite.name;
+						slot.GetComponent<SpriteRenderer>().sprite = null;
+					}
 				}
 				gameoverCursed = false;
 				GameObject newPlayer = Resources.Load("Characters/Player") as GameObject;

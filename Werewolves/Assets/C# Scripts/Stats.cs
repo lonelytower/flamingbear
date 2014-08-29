@@ -41,7 +41,7 @@ public class Stats : MonoBehaviour {
 				if(collision.gameObject.GetComponent<Projectile>().ally == true){
 					if(collision.gameObject.GetComponent<Projectile>().damageType == 0){
 						StartCoroutine(onHit(collision.gameObject.GetComponent<Projectile>().damage,true));
-						health -= collision.gameObject.GetComponent<Projectile>().damage*2;
+						health -= collision.gameObject.GetComponent<Projectile>().damage;
 					} else {
 						StartCoroutine(onHit(collision.gameObject.GetComponent<Projectile>().damage,false));
 						health -= collision.gameObject.GetComponent<Projectile>().damage;
@@ -54,7 +54,38 @@ public class Stats : MonoBehaviour {
 				if(collision.gameObject.GetComponent<Projectile>().ally == false){
 					if(collision.gameObject.GetComponent<Projectile>().damageType == 0){
 						StartCoroutine(onHit(collision.gameObject.GetComponent<Projectile>().damage,true));
-						health -= collision.gameObject.GetComponent<Projectile>().damage*2;
+						health -= collision.gameObject.GetComponent<Projectile>().damage;
+					} else {
+						StartCoroutine(onHit(collision.gameObject.GetComponent<Projectile>().damage,false));
+						health -= collision.gameObject.GetComponent<Projectile>().damage;
+					}
+					this.GetComponent<Movement>().TakeDamage (collision.gameObject.transform.position);
+					Destroy(collision.gameObject);
+				}
+			}
+		}
+	}
+
+	void OnTriggerEnter2D(Collider2D collision){
+		if(tag == "Enemy"){
+			if(collision.gameObject.tag=="Projectile"){
+				if(collision.gameObject.GetComponent<Projectile>().ally == true){
+					if(collision.gameObject.GetComponent<Projectile>().damageType == 0){
+						StartCoroutine(onHit(collision.gameObject.GetComponent<Projectile>().damage,true));
+						health -= collision.gameObject.GetComponent<Projectile>().damage;
+					} else {
+						StartCoroutine(onHit(collision.gameObject.GetComponent<Projectile>().damage,false));
+						health -= collision.gameObject.GetComponent<Projectile>().damage;
+					}
+					Destroy(collision.gameObject);
+				}
+			}
+		} else if(tag == "Player"){
+			if(collision.gameObject.tag=="Projectile"){
+				if(collision.gameObject.GetComponent<Projectile>().ally == false){
+					if(collision.gameObject.GetComponent<Projectile>().damageType == 0){
+						StartCoroutine(onHit(collision.gameObject.GetComponent<Projectile>().damage,true));
+						health -= collision.gameObject.GetComponent<Projectile>().damage;
 					} else {
 						StartCoroutine(onHit(collision.gameObject.GetComponent<Projectile>().damage,false));
 						health -= collision.gameObject.GetComponent<Projectile>().damage;
@@ -73,7 +104,7 @@ public class Stats : MonoBehaviour {
 		GameObject.Instantiate(hitNumber,this.transform.position,Quaternion.identity);
 		Color originalColor = this.renderer.material.color;
 		this.renderer.material.color = Color.red;
-		yield return new WaitForSeconds(0.5f);
+		yield return new WaitForSeconds(0.2f);
 		if(this!=null){
 			this.renderer.material.color = originalColor;
 		}
