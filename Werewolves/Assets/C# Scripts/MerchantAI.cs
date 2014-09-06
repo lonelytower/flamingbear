@@ -5,9 +5,12 @@ public class MerchantAI : MonoBehaviour {
 
 	public float itemDelay = 600;
 	float delay = 600;
+	public string characterName;
+	public string dialogue;
 
 	// Use this for initialization
 	void Start () {
+		Debug.Log (dialogue.ToString ());
 		GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().NPCS.Add(this.gameObject);
 		delay = 0;
 	}
@@ -31,8 +34,8 @@ public class MerchantAI : MonoBehaviour {
 			delay = itemDelay;
 		} else {
 			GameObject.FindGameObjectWithTag("MainCamera").GetComponent<UI>().dialogueOpen = true;
-			GameObject.FindGameObjectWithTag("MainCamera").GetComponent<UI>().speakerName = "Merchant Tim";
-			GameObject.FindGameObjectWithTag("MainCamera").GetComponent<UI>().dialogue = "Hey, I'm out of weapons right now. Come back later!";
+			GameObject.FindGameObjectWithTag("MainCamera").GetComponent<UI>().speakerName = characterName;
+			GameObject.FindGameObjectWithTag("MainCamera").GetComponent<UI>().dialogue = dialogue;
 		}
 	}
 }
