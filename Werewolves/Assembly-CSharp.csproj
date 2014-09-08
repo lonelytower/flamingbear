@@ -62,8 +62,8 @@
      <Compile Include="Assets\C# Scripts\LayerHide.cs" />
      <Compile Include="Assets\C# Scripts\Manager.cs" />
      <Compile Include="Assets\C# Scripts\MenuSystem.cs" />
-     <Compile Include="Assets\C# Scripts\MerchantAI.cs" />
      <Compile Include="Assets\C# Scripts\Movement.cs" />
+     <Compile Include="Assets\C# Scripts\NPCAI.cs" />
      <Compile Include="Assets\C# Scripts\Pickup.cs" />
      <Compile Include="Assets\C# Scripts\Projectile.cs" />
      <Compile Include="Assets\C# Scripts\RespawnEnemies.cs" />
