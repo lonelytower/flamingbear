@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class AllyAI : MonoBehaviour {
 
@@ -10,6 +11,8 @@ public class AllyAI : MonoBehaviour {
 	bool moveable = true;
 	float attackDelay;
 	public float startingDelay=2;
+	public float currentThreatLevel;
+	List<GameObject> nearbyTargets = new List<GameObject>();
 
 	// Use this for initialization
 	void Start () {
@@ -31,6 +34,12 @@ public class AllyAI : MonoBehaviour {
 			break;
 		case(2):
 			if(target!=null){
+				foreach(GameObject targetEnemy in nearbyTargets){
+					if(targetEnemy.GetComponent<Stats>().returnThreat() >= currentThreatLevel+currentThreatLevel*0.1f){
+						target = targetEnemy;
+						currentThreatLevel = targetEnemy.GetComponent<Stats>().returnThreat();
+					}
+				}
 				if(Vector3.Distance(this.transform.position,target.transform.position)>1){
 					this.transform.position = Vector3.MoveTowards(this.transform.position, target.transform.position, walkSpeed * Time.deltaTime);
 				} else {
@@ -103,8 +112,8 @@ public class AllyAI : MonoBehaviour {
 		}
 		moveable = false;
 		StartCoroutine(entity.GetComponent<Stats>().onHit(this.GetComponent<Stats>().damage,false));
-		//entity.GetComponent<Stats>().onHit(this.GetComponent<Stats>().damage,false);
 		entity.GetComponent<Stats>().health -= this.GetComponent<Stats>().damage;
+		this.GetComponent<Stats>().increaseEngagementDamage(this.GetComponent<Stats>().damage);
 		if (entity.GetComponent<Movement> () != null) {
 			entity.GetComponent<Movement> ().TakeDamage (this.transform.position);
 		}
@@ -125,6 +134,18 @@ public class AllyAI : MonoBehaviour {
 			break;
 		default:
 			break;
+		}
+	}
+
+	public void setTarget(GameObject newTarget){
+		if(!nearbyTargets.Contains(newTarget)){
+			nearbyTargets.Add(newTarget);
+		}
+		if(nearbyTargets.Count<=1){
+			target = newTarget;
+			currentThreatLevel = newTarget.GetComponent<Stats>().returnThreat();
+		} else {
+			
 		}
 	}
 }

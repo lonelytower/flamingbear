@@ -56,6 +56,11 @@ public class Detection : MonoBehaviour {
 			collider.gameObject.GetComponent<AllyAI>().setPriority(1);
 		}
 	}
+	void OnTriggerStay2D(Collider2D collider){
+		if(collider.gameObject.tag=="Enemy"){
+
+		}
+	}
 
 	public void increaseRadius(float amount){
 		circColl.radius+= amount;

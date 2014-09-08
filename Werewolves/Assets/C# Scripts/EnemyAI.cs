@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class EnemyAI : MonoBehaviour {
 
@@ -21,6 +22,10 @@ public class EnemyAI : MonoBehaviour {
 	private float untilLastAttack = 0f;
 	private GameObject targetPlayer;
 	private AIState state = new AIState();
+	Vector3 newPoint;
+	float switchDirectionTimer = 2;
+	List<GameObject> nearbyTargets = new List<GameObject>();
+	public float currentThreatLevel;
 
 	float AttackRange = 0.8f;
 
@@ -30,6 +35,7 @@ public class EnemyAI : MonoBehaviour {
 			this.renderer.material.color = Color.green;
 		}
 		state = AIState.Idle;
+		newPoint = new Vector3(this.transform.position.x+Random.Range(-1f,1f),this.transform.position.y+Random.Range(-1f,1f),this.transform.position.z);
 		//targetPlayer = GameObject.FindGameObjectWithTag ("Player");
 	}
 
@@ -82,12 +88,12 @@ public class EnemyAI : MonoBehaviour {
         
 	}
 	void WalkTowardsRandomPoint(){
-		Vector3 newPoint;
-		newPoint = new Vector3(this.transform.position.x+Random.Range(0.0f,0.1f),this.transform.position.y+Random.Range(0.0f,0.1f),this.transform.position.z);
-		if(engaged == false){
-			Vector3.MoveTowards(this.transform.position,newPoint,walkSpeed*Time.deltaTime);
+		switchDirectionTimer -= Time.deltaTime;
+		if(switchDirectionTimer <= 0){
+			switchDirectionTimer = 1.5f;
+			newPoint = new Vector3(this.transform.position.x+Random.Range(-1f,1f),this.transform.position.y+Random.Range(-1f,1f),this.transform.position.z);
 		}
-
+		this.transform.position = Vector3.MoveTowards(this.transform.position,newPoint,walkSpeed*Time.deltaTime);
 	}
 	private float GetDistanceFromEntity(GameObject entity)
 	{
@@ -120,6 +126,7 @@ public class EnemyAI : MonoBehaviour {
 		moveable = false;
 		StartCoroutine(entity.GetComponent<Stats>().onHit(this.GetComponent<Stats>().damage,false));
 		entity.GetComponent<Stats>().health -= this.GetComponent<Stats>().damage;
+		this.GetComponent<Stats>().increaseEngagementDamage(this.GetComponent<Stats>().damage);
 		if(this.name.Contains("Curse")){
 			if(Random.Range(1,100)<60){
 				entity.GetComponent<Stats>().cursed = true;
@@ -155,6 +162,14 @@ public class EnemyAI : MonoBehaviour {
 		untilLastAttack -= Time.deltaTime;
 		if(targetPlayer != null){
 			engaged = true;
+			if(nearbyTargets.Count!=0){
+				foreach(GameObject target in nearbyTargets){
+					if(target.GetComponent<Stats>().returnThreat() >= currentThreatLevel+currentThreatLevel*0.1f){
+						targetPlayer = target;
+						currentThreatLevel = target.GetComponent<Stats>().returnThreat();
+					}
+				}
+			}
 			if (GetDistanceFromEntity(targetPlayer) < AttackRange)
 			{
 				this.rigidbody2D.velocity = Vector3.zero;
@@ -176,6 +191,14 @@ public class EnemyAI : MonoBehaviour {
 
 	public void setTarget(GameObject newTarget){
 		awake = true;
-		targetPlayer = newTarget;
+		if(!nearbyTargets.Contains(newTarget)){
+			nearbyTargets.Add(newTarget);
+		}
+		if(nearbyTargets.Count<=1){
+			targetPlayer = newTarget;
+			currentThreatLevel = newTarget.GetComponent<Stats>().returnThreat();
+		} else {
+
+		}
 	}
 }

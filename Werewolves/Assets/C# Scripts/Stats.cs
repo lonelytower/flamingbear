@@ -7,14 +7,32 @@ public class Stats : MonoBehaviour {
 	public float stamina;
 	public int damage; //Every unit does flat damage, set in inspector to make this easier on us
 	public bool cursed = false;
+	public int threat;
+	float engagementDamage; //Total damage done in the current engagement
+	float engagementTimer;
+	int previousHealth;
+	float previousEngagementDamage;
 	
 	// Use this for initialization
 	void Start () {
-	
+		previousHealth = health;
+		previousEngagementDamage = engagementDamage;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		if(previousEngagementDamage < engagementDamage){
+			engagementTimer = 5;
+		}
+		if(health<previousHealth){
+			engagementTimer = 5;
+		}
+		if(engagementTimer <= 0){
+			engagementDamage = 0;
+		}
+		previousHealth = health;
+		previousEngagementDamage = engagementDamage;
+		engagementTimer -= Time.deltaTime;
 		if(health<=0){
 			if(this.tag == "Player"){
 				
@@ -79,6 +97,18 @@ public class Stats : MonoBehaviour {
 					}
 					Destroy(collision.gameObject);
 				}
+				GameObject.FindGameObjectWithTag("Player").GetComponent<WeaponSystem>().lowerEquippedDurability(1);
+				GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[0].transform.GetChild(0).GetComponent<DurabilityDisplay>().lowerDurability(1);
+				if(GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnEquippedItem(1).GetComponent<SpriteRenderer>().sprite!= null){
+					GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[1].transform.GetChild(0).GetComponent<DurabilityDisplay>().lowerDurability(1);
+				}
+				if(GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[0].transform.GetChild(0).GetComponent<DurabilityDisplay>().returnDurability().x<=0){
+					GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[0].GetComponent<SlotBehaviour>().itemQuantity-=1;
+				}
+				if(GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[1].transform.GetChild(0).GetComponent<DurabilityDisplay>().returnDurability().x<=0){
+					GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[1].GetComponent<SlotBehaviour>().itemQuantity-=1;
+				}
+				collision.gameObject.GetComponent<Projectile>().owner.GetComponent<Stats>().increaseEngagementDamage(damage);
 			}
 		} else if(tag == "Player"){
 			if(collision.gameObject.tag=="Projectile"){
@@ -93,6 +123,7 @@ public class Stats : MonoBehaviour {
 					this.GetComponent<Movement>().TakeDamage (collision.gameObject.transform.position);
 					Destroy(collision.gameObject);
 				}
+				collision.gameObject.GetComponent<Projectile>().owner.GetComponent<Stats>().increaseEngagementDamage(damage);
 			}
 		}
 	}
@@ -108,5 +139,11 @@ public class Stats : MonoBehaviour {
 		if(this!=null){
 			this.renderer.material.color = originalColor;
 		}
+	}
+	public void increaseEngagementDamage(int amount){
+		engagementDamage += amount;
+	}
+	public float returnThreat(){
+		return engagementDamage;
 	}
 }

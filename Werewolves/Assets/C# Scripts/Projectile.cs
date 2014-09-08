@@ -12,6 +12,7 @@ public class Projectile : MonoBehaviour {
 	public int damageType;
 	public bool ally = true;
 	public int direction = 0; //1 = up 2 = down 3 = left 4 = right Inherit from character direction
+	public GameObject owner;
 
 	// Use this for initialization
 	void Start () {

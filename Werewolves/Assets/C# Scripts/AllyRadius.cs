@@ -15,8 +15,9 @@ public class AllyRadius : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D collider){
 		if(collider.gameObject.tag=="Enemy"){
-			this.transform.parent.gameObject.GetComponent<AllyAI>().target = collider.gameObject;
+			this.transform.parent.gameObject.GetComponent<AllyAI>().setTarget(collider.gameObject);
 			this.transform.parent.gameObject.GetComponent<AllyAI>().setPriority(2);
+			collider.gameObject.GetComponent<EnemyAI>().setTarget(this.transform.parent.gameObject);
 		}
 		if(collider.gameObject.tag == "Player"){
 			if(this.name.Contains("Follower")){
@@ -27,6 +28,7 @@ public class AllyRadius : MonoBehaviour {
 	void OnTriggerExit2D(Collider2D collider){
 		if(collider.gameObject.tag=="Enemy"){
 			this.transform.parent.gameObject.GetComponent<AllyAI>().setPriority(2);
+			collider.gameObject.GetComponent<EnemyAI>().setTarget(this.transform.parent.gameObject);
 		}
 		if(collider.gameObject.tag == "Player"){
 			if(this.name.Contains("Follower")){
@@ -40,7 +42,7 @@ public class AllyRadius : MonoBehaviour {
 //				this.transform.parent.gameObject.GetComponent<AllyAI>().setPriority(1);
 //			} else {
 				if(collider.gameObject.tag=="Enemy"){
-					this.transform.parent.gameObject.GetComponent<AllyAI>().target = collider.gameObject;
+			this.transform.parent.gameObject.GetComponent<AllyAI>().setTarget(collider.gameObject);
 					this.transform.parent.gameObject.GetComponent<AllyAI>().setPriority(2);
 				}
 			}

@@ -83,6 +83,7 @@ public class WeaponSystem : MonoBehaviour {
 						spawnPosition = mouseVector - new Vector2(this.transform.position.x,this.transform.position.y);
 						spawnPosition = spawnPosition.normalized;
 						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/Swipe"),this.transform.position + new Vector3(spawnPosition.normalized.x,spawnPosition.normalized.y,0),this.transform.rotation) as GameObject;
+						projectileObj.GetComponent<Projectile>().owner = this.gameObject;
 						projectileObj.transform.LookAt(this.transform.position);
 						projectileObj.transform.rotation = Quaternion.Euler(new Vector3(0,0,projectileObj.transform.eulerAngles.x));
 //						switch(this.GetComponent<Movement>().direction){
@@ -152,22 +153,13 @@ public class WeaponSystem : MonoBehaviour {
 						spawnPosition = spawnPosition.normalized;
 						projectileObj = GameObject.Instantiate(Resources.Load("Weapons/ProjectileBase"),this.transform.position + new Vector3(spawnPosition.normalized.x,spawnPosition.normalized.y,0),this.transform.rotation) as GameObject;
 						projectileObj.GetComponent<Projectile>().flightDirection = spawnPosition;
+						projectileObj.GetComponent<Projectile>().owner = this.gameObject;
 						//projectileObj.GetComponent<Projectile>().direction=this.GetComponent<Movement>().direction;
 						projectileObj.GetComponent<Projectile>().velocity = equippedItem.GetComponent<WeaponStats>().projectileVelocity; //Set it to the weapon value.
 						//projectileObj.GetComponent<Projectile>().damage = 5;
 					}
 					if(equippedItem!=null){
-						equippedItem.GetComponent<WeaponStats>().durability-=1;
-						GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[0].transform.GetChild(0).GetComponent<DurabilityDisplay>().lowerDurability(1);
-						if(GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnEquippedItem(1).GetComponent<SpriteRenderer>().sprite!= null){
-							GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[1].transform.GetChild(0).GetComponent<DurabilityDisplay>().lowerDurability(1);
-						}
-						if(GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[0].transform.GetChild(0).GetComponent<DurabilityDisplay>().returnDurability().x<=0){
-							GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[0].GetComponent<SlotBehaviour>().itemQuantity-=1;
-						}
-						if(GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[1].transform.GetChild(0).GetComponent<DurabilityDisplay>().returnDurability().x<=0){
-							GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[1].GetComponent<SlotBehaviour>().itemQuantity-=1;
-						}
+
 					}
 				}
 			}
@@ -266,6 +258,11 @@ public class WeaponSystem : MonoBehaviour {
 		}
 		if(equippedItem!=null){
 			delayCount = equippedItem.GetComponent<WeaponStats>().delay;
+		}
+	}
+	public void lowerEquippedDurability(int amount){
+		if(equippedItem!=null){
+			equippedItem.GetComponent<WeaponStats>().durability-=amount;
 		}
 	}
 }
