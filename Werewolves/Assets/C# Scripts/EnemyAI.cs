@@ -19,6 +19,8 @@ public class EnemyAI : MonoBehaviour {
 	bool engaged = false;
 	public float walkSpeed;
 	public float attackDelay;
+	public float giveupTimer = 5;
+	float giveupMax = 5;
 	private float untilLastAttack = 0f;
 	private GameObject targetPlayer;
 	private AIState state = new AIState();
@@ -26,6 +28,7 @@ public class EnemyAI : MonoBehaviour {
 	float switchDirectionTimer = 2;
 	List<GameObject> nearbyTargets = new List<GameObject>();
 	public float currentThreatLevel;
+	bool stopChase = false;
 
 	float AttackRange = 0.8f;
 
@@ -160,28 +163,43 @@ public class EnemyAI : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		untilLastAttack -= Time.deltaTime;
+		stopChase = false;
 		if(targetPlayer != null){
+			
 			engaged = true;
-			if(nearbyTargets.Count!=0){
-				foreach(GameObject target in nearbyTargets){
-					if(target.GetComponent<Stats>().returnThreat() >= currentThreatLevel+currentThreatLevel*0.1f){
-						targetPlayer = target;
-						currentThreatLevel = target.GetComponent<Stats>().returnThreat();
+			if(Vector3.Distance(targetPlayer.transform.position,this.transform.position)>10){
+				giveupTimer-=Time.deltaTime;
+			} else {
+				giveupTimer = giveupMax;
+			}
+			if(giveupTimer<=0){
+				targetPlayer = null;
+				engaged = false;
+				stopChase = true;
+				giveupTimer = giveupMax;
+			}
+			if(stopChase ==true){
+				if(nearbyTargets.Count!=0){
+					foreach(GameObject target in nearbyTargets){
+						if(target.GetComponent<Stats>().returnThreat() >= currentThreatLevel+currentThreatLevel*0.1f){
+							targetPlayer = target;
+							currentThreatLevel = target.GetComponent<Stats>().returnThreat();
+						}
 					}
 				}
-			}
-			if (GetDistanceFromEntity(targetPlayer) < AttackRange)
-			{
-				this.rigidbody2D.velocity = Vector3.zero;
-	            if (untilLastAttack <= 0)
+				if (GetDistanceFromEntity(targetPlayer) < AttackRange)
 				{
-					StartCoroutine(AttackEntity(targetPlayer,this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length));
-					untilLastAttack = attackDelay;
+					this.rigidbody2D.velocity = Vector3.zero;
+		            if (untilLastAttack <= 0)
+					{
+						StartCoroutine(AttackEntity(targetPlayer,this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length));
+						untilLastAttack = attackDelay;
+					}
 				}
-			}
-			else 
-			{
-				WalkTowards (targetPlayer);
+				else 
+				{
+					WalkTowards (targetPlayer);
+				}
 			}
 		} else {
 			engaged = false;
