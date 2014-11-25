@@ -20,6 +20,10 @@ public class SlotBehaviour : MonoBehaviour {
 			this.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().enabled = false;
 		}
 		if(itemQuantity<=0){
+			GameObject tempItem = Resources.Load("Items/"+this.GetComponent<SpriteRenderer>().sprite.name) as GameObject;
+			if(tempItem.GetComponent<ItemBehaviour>().weapon == true){
+				GameObject.Instantiate(Resources.Load("Items/Scrap Metal"),GameObject.FindGameObjectWithTag("Player").transform.position,Quaternion.identity);
+			}
 			this.GetComponent<SpriteRenderer>().sprite = null;
 		}
 	}

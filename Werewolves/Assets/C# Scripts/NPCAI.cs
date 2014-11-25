@@ -7,6 +7,8 @@ public class NPCAI : MonoBehaviour {
 	float delay = 600;
 	public string NPCName;
 	public string dialogue;
+	public bool merchant = false;
+	int scrapCount = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -22,15 +24,32 @@ public class NPCAI : MonoBehaviour {
 	}
 
 	void OnMouseUpAsButton(){
-		if(delay<=0){
-			GameObject maceObject;
-			maceObject = Resources.Load("Items/Mace") as GameObject;
-			if(GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.addItemToBar(maceObject) == true){
-
-			} else {
-				GameObject.Instantiate(maceObject,GameObject.FindGameObjectWithTag("Player").transform.position,Quaternion.identity);
+		if(merchant){
+			GameObject scrapSlot = null;
+			foreach(GameObject slot in GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(false)){
+				if(slot.GetComponent<SpriteRenderer>().sprite.name.Contains("Scrap")){
+					scrapSlot = slot;
+				}
 			}
-			delay = itemDelay;
+			if(scrapSlot != null){
+				scrapCount += scrapSlot.GetComponent<SlotBehaviour>().itemQuantity;
+				scrapSlot.GetComponent<SpriteRenderer>().sprite = null;
+				scrapSlot.GetComponent<SlotBehaviour>().itemQuantity = 0;
+			}
+			if(scrapCount>=20){
+				dialogue = "Hey, I've gathered enough scrap to make you a sword! Here you go, take good care of it.";
+				GameObject swordObject;
+				swordObject = Resources.Load("Items/Sword") as GameObject;
+				if(GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.addItemToBar(swordObject) == true){
+
+				} else {
+					GameObject.Instantiate(swordObject,GameObject.FindGameObjectWithTag("Player").transform.position,Quaternion.identity);
+				}
+			} else {
+				dialogue = "You need " + (20-scrapCount).ToString() + " more scrap metal in order for me to make you a sword. Keep it coming!";
+			}
+			GameObject.FindGameObjectWithTag("MainCamera").GetComponent<UI>().dialogueOpen = true;
+			GameObject.FindGameObjectWithTag("MainCamera").GetComponent<UI>().speakerName = NPCName;
 		} else {
 			GameObject.FindGameObjectWithTag("MainCamera").GetComponent<UI>().dialogueOpen = true;
 			GameObject.FindGameObjectWithTag("MainCamera").GetComponent<UI>().speakerName = NPCName;
