@@ -28,12 +28,14 @@ public class Nametags : MonoBehaviour {
 			} else {
 				enabled = false;
 			}
+		} else {
+			enabled = false;
 		}
 	}
 
 	void OnGUI(){
 		if(enabled==true){
-			GUI.Label(new Rect(screenPointPosition.x-42,Screen.height-screenPointPosition.y-40,150,30),nameDisplayed);
+			GUI.Label(new Rect(screenPointPosition.x-nameDisplayed.Length*3,Screen.height-screenPointPosition.y-40,150,30),nameDisplayed);
 		}
 
 	}
