@@ -8,7 +8,8 @@ public class Cutscenes : MonoBehaviour {
 	public bool triggered = false;
 	bool lastFrameTriggered;
 	int numberOfLines;
-	public GUIStyle centerAlignStyle;
+	public GUISkin centerAlignSkin;
+	//public GUIStyle centerAlignStyle;
 	public int currentLine = 0;
 	public List<string> linesOfDialogue = new List<string>();
 	public List<string> lineSpeakers = new List<string>();
@@ -39,6 +40,7 @@ public class Cutscenes : MonoBehaviour {
 				triggered = true;
 			} else {
 				triggered = false;
+				currentLine =0;
 			}
 		}
 		numberOfLines = linesOfDialogue.Count;
@@ -77,13 +79,14 @@ public class Cutscenes : MonoBehaviour {
 	}
 
 	void OnGUI (){
-
+		centerAlignSkin.label.alignment = TextAnchor.UpperCenter;
 		//centerAlignStyle = GUI.skin.GetStyle("Label");
 		//centerAlignStyle.alignment = TextAnchor.UpperCenter;
+		//centerAlignStyle.alignment = TextAnchor.UpperLeft;
 		if(triggered){
 			//GUI.Label(new Rect(Screen.width/12,Screen.height/1.135f,Screen.width,Screen.height/5),linesOfDialogue[currentLine]);
-			GUI.Label(new Rect(0,Screen.height/1.1f,Screen.width,Screen.height/5),"<size=16>" + lineSpeakers[currentLine] + ":  " +  linesOfDialogue[currentLine] + "</size>");
-			GUI.Label(new Rect(0,Screen.height/1.05f,Screen.width,Screen.height/5),"<size=8> Press Space to continue or Esc to skip</size>");
+			GUI.Label(new Rect(0,Screen.height/1.1f,Screen.width,Screen.height/5),"<size=16>" + lineSpeakers[currentLine] + ":  " +  linesOfDialogue[currentLine] + "</size>",centerAlignSkin.GetStyle("Label"));
+			GUI.Label(new Rect(0,0,Screen.width,Screen.height/5),"<size=8> Press Space to continue or Esc to skip</size>",centerAlignSkin.GetStyle("Label"));
 		}
 	}
 
