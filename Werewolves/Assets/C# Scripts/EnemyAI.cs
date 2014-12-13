@@ -22,7 +22,7 @@ public class EnemyAI : MonoBehaviour {
 	public float giveupTimer = 5;
 	float giveupMax = 5;
 	private float untilLastAttack = 0f;
-	private GameObject targetPlayer;
+	public GameObject targetPlayer;
 	private AIState state = new AIState();
 	Vector3 newPoint;
 	float switchDirectionTimer = 2;
@@ -79,15 +79,6 @@ public class EnemyAI : MonoBehaviour {
 		} else {
 			this.rigidbody2D.velocity = Vector3.zero;
 		}
-        // When we have a floor, I'll make it follow the floor. For now, the sky is the limit.
-
-
-        //if (!this.animation.IsPlaying("walking"))
-        //{
-        //    this.animation.Play("walking");
-        //}
-
-        // Let's pretend we have a walking animation or something. Probably won't use animations if we're using sprites anyway.
         
 	}
 	void WalkTowardsRandomPoint(){
@@ -187,19 +178,19 @@ public class EnemyAI : MonoBehaviour {
 						}
 					}
 				}
-				if (GetDistanceFromEntity(targetPlayer) < AttackRange)
+			}
+			if (GetDistanceFromEntity(targetPlayer) < AttackRange)
+			{
+				this.rigidbody2D.velocity = Vector3.zero;
+	            if (untilLastAttack <= 0)
 				{
-					this.rigidbody2D.velocity = Vector3.zero;
-		            if (untilLastAttack <= 0)
-					{
-						StartCoroutine(AttackEntity(targetPlayer,this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length));
-						untilLastAttack = attackDelay;
-					}
+					StartCoroutine(AttackEntity(targetPlayer,this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length));
+					untilLastAttack = attackDelay;
 				}
-				else 
-				{
-					WalkTowards (targetPlayer);
-				}
+			}
+			else 
+			{
+				WalkTowards (targetPlayer);
 			}
 		} else {
 			engaged = false;

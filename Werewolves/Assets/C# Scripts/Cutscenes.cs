@@ -2,6 +2,29 @@
 using System.Collections;
 using System.Collections.Generic;
 
+
+[System.Serializable]
+public class cutsceneControls{
+	public Vector3 newPosition;
+	public float moveSpeed;
+	public string animationName;
+	public bool loopAnimation;
+}
+
+[System.Serializable]
+public class cutsceneControl{
+	public List<cutsceneControls> stepActions = new List<cutsceneControls>();
+	public bool followPlayer;
+	public bool changeCameraPosition;
+	public Vector3 newCameraLocation;
+	public bool pan;
+	public float panSpeed;
+	public bool autoPlay;
+	public float autoPlayDelay;
+	[HideInInspector]
+	public bool timerSet;
+}
+
 public class Cutscenes : MonoBehaviour {
 
 	GameObject mainCamera;
@@ -11,8 +34,15 @@ public class Cutscenes : MonoBehaviour {
 	public GUISkin centerAlignSkin;
 	//public GUIStyle centerAlignStyle;
 	public int currentLine = 0;
+	float timer;
+	
 	public List<string> linesOfDialogue = new List<string>();
 	public List<string> lineSpeakers = new List<string>();
+
+
+	
+	public List<cutsceneControl> cutsceneSequence = new List<cutsceneControl>();
+	public List<GameObject> affectedGameObjects = new List<GameObject>();
 
 	// Use this for initialization
 	void Start () {
@@ -22,13 +52,16 @@ public class Cutscenes : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(triggered){
-			if(Input.GetKeyDown(KeyCode.Space)){
+			lineActions(currentLine);
+			timer -= Time.deltaTime;
+			if(Input.GetKeyDown(KeyCode.Space)||timer<=0){
 				if(currentLine<linesOfDialogue.Count-1){
 				currentLine+=1;
 				} else {
 					triggered = false;
 					currentLine = 0;
 				}
+				timer = Mathf.Infinity;
 			}
 			if(Input.GetKeyDown(KeyCode.Escape)){
 				triggered = false;
@@ -55,10 +88,14 @@ public class Cutscenes : MonoBehaviour {
 				foreach(GameObject ally in GameObject.FindGameObjectsWithTag("Ally")){
 					ally.GetComponent<AllyAI>().enabled = false;
 				}
+				foreach(GameObject pickup in GameObject.FindGameObjectsWithTag("Pickups")){
+					pickup.collider2D.enabled = false;
+				}
 				StartCoroutine(letterboxFade(0.25f));
+				mainCamera.GetComponent<CameraFollow>().follow = false;
 				GameObject.FindGameObjectWithTag("Player").GetComponent<Movement>().enabled = false;
+				GameObject.FindGameObjectWithTag("Player").GetComponent<WeaponSystem>().enabled = false;
 				GameObject.FindGameObjectWithTag("MainCamera").GetComponent<UI>().enabled = false;
-				//mainCamera.camera.rect = new Rect(0,0.16f,1,0.66f);
 			} else {
 				for(int i = 0; i < mainCamera.transform.childCount; i++){
 					mainCamera.transform.GetChild(i).gameObject.SetActive(true);
@@ -69,10 +106,14 @@ public class Cutscenes : MonoBehaviour {
 				foreach(GameObject ally in GameObject.FindGameObjectsWithTag("Ally")){
 					ally.GetComponent<AllyAI>().enabled = true;
 				}
+				foreach(GameObject pickup in GameObject.FindGameObjectsWithTag("Pickups")){
+					pickup.collider2D.enabled = true;
+				}
 				StartCoroutine(letterboxFade(0.25f));
+				mainCamera.GetComponent<CameraFollow>().follow = true;
 				GameObject.FindGameObjectWithTag("Player").GetComponent<Movement>().enabled = true;
+				GameObject.FindGameObjectWithTag("Player").GetComponent<WeaponSystem>().enabled = true;
 				GameObject.FindGameObjectWithTag("MainCamera").GetComponent<UI>().enabled = true;
-					//mainCamera.camera.rect = new Rect(0,0,1,1);
 			}
 		}
 		lastFrameTriggered = triggered;
@@ -80,15 +121,35 @@ public class Cutscenes : MonoBehaviour {
 
 	void OnGUI (){
 		centerAlignSkin.label.alignment = TextAnchor.UpperCenter;
-		//centerAlignStyle = GUI.skin.GetStyle("Label");
-		//centerAlignStyle.alignment = TextAnchor.UpperCenter;
-		//centerAlignStyle.alignment = TextAnchor.UpperLeft;
 		if(triggered){
-			//GUI.Label(new Rect(Screen.width/12,Screen.height/1.135f,Screen.width,Screen.height/5),linesOfDialogue[currentLine]);
 			GUI.Label(new Rect(0,Screen.height/1.1f,Screen.width,Screen.height/5),"<size=16>" + lineSpeakers[currentLine] + ":  " +  linesOfDialogue[currentLine] + "</size>",centerAlignSkin.GetStyle("Label"));
 			GUI.Label(new Rect(0,0,Screen.width,Screen.height/5),"<size=8> Press Space to continue or Esc to skip</size>",centerAlignSkin.GetStyle("Label"));
 		}
 	}
+
+	void lineActions(int lineIndex){
+		if(cutsceneSequence[lineIndex].autoPlay == true&&cutsceneSequence[lineIndex].timerSet == false){
+			timer = cutsceneSequence[lineIndex].autoPlayDelay;
+			cutsceneSequence[lineIndex].timerSet = true;
+		}
+		if(cutsceneSequence[lineIndex].followPlayer== false && cutsceneSequence[lineIndex].changeCameraPosition == true){
+			mainCamera.GetComponent<CameraFollow>().follow = false;
+			if(cutsceneSequence[lineIndex].pan == true){
+				mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position,cutsceneSequence[lineIndex].newCameraLocation,(1/(cutsceneSequence[lineIndex].newCameraLocation - mainCamera.transform.position).magnitude)*cutsceneSequence[lineIndex].panSpeed);
+			} else {
+				mainCamera.transform.position = cutsceneSequence[lineIndex].newCameraLocation;
+			}
+		} else if(cutsceneSequence[lineIndex].followPlayer == true){
+			mainCamera.GetComponent<CameraFollow>().follow = true;
+		}
+		for(int i = 0; i<cutsceneSequence[lineIndex].stepActions.Count; i++){
+			if(affectedGameObjects[i].transform.position!=cutsceneSequence[lineIndex].stepActions[i].newPosition){
+				affectedGameObjects[i].transform.position = Vector3.Lerp(affectedGameObjects[i].transform.position,cutsceneSequence[lineIndex].stepActions[i].newPosition,(1/(cutsceneSequence[lineIndex].stepActions[i].newPosition - affectedGameObjects[i].transform.position).magnitude)*cutsceneSequence[lineIndex].stepActions[i].moveSpeed);
+			}
+			affectedGameObjects[i].GetComponent<Animator>().Play(cutsceneSequence[lineIndex].stepActions[i].animationName);
+		}
+	}
+
 
 	IEnumerator letterboxFade(float timeToTake){
 		if(triggered){

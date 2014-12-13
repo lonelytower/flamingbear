@@ -135,7 +135,7 @@ public class Stats : MonoBehaviour {
 		GameObject.Instantiate(hitNumber,this.transform.position,Quaternion.identity);
 		Color originalColor = this.renderer.material.color;
 		this.renderer.material.color = Color.red;
-		yield return new WaitForSeconds(0.2f);
+		yield return new WaitForSeconds(0.05f);
 		if(this!=null){
 			this.renderer.material.color = originalColor;
 		}

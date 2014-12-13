@@ -3,6 +3,7 @@ using System.Collections;
 
 public class CameraFollow : MonoBehaviour {
 	GameObject player;
+	public bool follow = true;
 
 	// Use this for initialization
 	void Start () {
@@ -11,7 +12,7 @@ public class CameraFollow : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(player!=null){
+		if(player!=null&&follow==true){
 			this.transform.position = new Vector3(player.transform.position.x,player.transform.position.y,player.transform.position.z-1);
 		}
 	
