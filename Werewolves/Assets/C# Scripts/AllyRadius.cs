@@ -10,7 +10,10 @@ public class AllyRadius : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		if(this.transform.parent.gameObject.GetComponent<AllyAI>().target==null){
+			this.transform.parent.gameObject.GetComponent<AllyAI>().setPriority(1);
+		}
+
 	}
 
 	void OnTriggerEnter2D(Collider2D collider){

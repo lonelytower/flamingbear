@@ -39,8 +39,8 @@ public class ActionBar : MonoBehaviour {
 						actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite = null; //Unequip the first equip slot
 
 						slot.transform.GetChild(0).GetComponent<DurabilityDisplay>().newDurability(actionBarEquipSlots[0].transform.GetChild(0).GetComponent<DurabilityDisplay>().returnDurability());
-						actionBarEquipSlots[0].transform.GetChild(0).GetComponent<DurabilityDisplay>().newDurability(0,1);
-						actionBarEquipSlots[1].transform.GetChild(0).GetComponent<DurabilityDisplay>().newDurability(0,1);
+						actionBarEquipSlots[0].transform.GetChild(0).GetComponent<DurabilityDisplay>().newDurability(1,1);
+						actionBarEquipSlots[1].transform.GetChild(0).GetComponent<DurabilityDisplay>().newDurability(1,1);
 
 					}
 				}
@@ -62,8 +62,8 @@ public class ActionBar : MonoBehaviour {
 						actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite = null; // Empty the second equip slot
 
 						slot.transform.GetChild(0).GetComponent<DurabilityDisplay>().newDurability(actionBarEquipSlots[0].transform.GetChild(0).GetComponent<DurabilityDisplay>().returnDurability());
-						actionBarEquipSlots[0].transform.GetChild(0).GetComponent<DurabilityDisplay>().newDurability(0,1);
-						actionBarEquipSlots[1].transform.GetChild(0).GetComponent<DurabilityDisplay>().newDurability(0,1);
+						actionBarEquipSlots[0].transform.GetChild(0).GetComponent<DurabilityDisplay>().newDurability(1,1);
+						actionBarEquipSlots[1].transform.GetChild(0).GetComponent<DurabilityDisplay>().newDurability(1,1);
 
 
 					}
@@ -146,7 +146,7 @@ public class ActionBar : MonoBehaviour {
 		if(actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite!=null){
 			tempItem = Resources.Load("Items/"+actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite.name) as GameObject; // The activated slots item
 			if(tempItem.GetComponent<ItemBehaviour>().weapon==true){
-				if(actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite!=null){
+				if(actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite!=null){ //If there is already a weapon equipped
 					tempItem2 = Resources.Load("Items/"+actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite.name) as GameObject; //the item in the first equip slot
 				}
 				if(actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite!=null){ //There is an item in the first equip slot
@@ -160,11 +160,10 @@ public class ActionBar : MonoBehaviour {
 					if(tempItem.GetComponent<WeaponStats>().twoHanded == true){ //Item being equipped is two handed
 						actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite; // Also set the second equip slot sprite to the activated slot sprite
 						actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite=tempSprite; // Put the old weapon sprite in the activated slot
-
+						
 						actionBarSlots[slot-1].transform.GetChild(0).GetComponent<DurabilityDisplay>().newDurability((int)tempDurability2.x,(int)tempDurability2.y);
 						actionBarEquipSlots[0].transform.GetChild(0).GetComponent<DurabilityDisplay>().newDurability((int)tempDurability.x,(int)tempDurability.y);
 						actionBarEquipSlots[1].transform.GetChild(0).GetComponent<DurabilityDisplay>().newDurability((int)tempDurability.x,(int)tempDurability.y);
-
 					} else { //Item being equipped is one handed
 						if(actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite!=null&&tempItem2.GetComponent<WeaponStats>().twoHanded == false){ //If the item in the first equip slot is one handed
 							tempSprite = actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite; //Set tempsprite to the second equip slot
@@ -173,7 +172,7 @@ public class ActionBar : MonoBehaviour {
 
 							actionBarSlots[slot-1].transform.GetChild(0).GetComponent<DurabilityDisplay>().newDurability((int)tempDurability2.x,(int)tempDurability2.y);
 							actionBarEquipSlots[0].transform.GetChild(0).GetComponent<DurabilityDisplay>().newDurability((int)tempDurability.x,(int)tempDurability.y);
-							actionBarEquipSlots[1].transform.GetChild(0).GetComponent<DurabilityDisplay>().newDurability(0,1);
+							actionBarEquipSlots[1].transform.GetChild(0).GetComponent<DurabilityDisplay>().newDurability(1,1);
 
 
 						} else { //If the item in the first equip slot is two handed
@@ -190,7 +189,7 @@ public class ActionBar : MonoBehaviour {
 						actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite;
 						actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite = null;
 
-						actionBarSlots[slot-1].transform.GetChild(0).GetComponent<DurabilityDisplay>().newDurability(0,1);
+						actionBarSlots[slot-1].transform.GetChild(0).GetComponent<DurabilityDisplay>().newDurability(1,1);
 						actionBarEquipSlots[0].transform.GetChild(0).GetComponent<DurabilityDisplay>().newDurability((int)tempDurability.x,(int)tempDurability.y);
 						actionBarEquipSlots[1].transform.GetChild(0).GetComponent<DurabilityDisplay>().newDurability((int)tempDurability.x,(int)tempDurability.y);
 
@@ -200,7 +199,7 @@ public class ActionBar : MonoBehaviour {
 							actionBarEquipSlots[1].GetComponent<SpriteRenderer>().sprite=actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite;
 							actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite = tempSprite;
 
-							actionBarSlots[slot-1].transform.GetChild(0).GetComponent<DurabilityDisplay>().newDurability(0,1);
+							actionBarSlots[slot-1].transform.GetChild(0).GetComponent<DurabilityDisplay>().newDurability(1,1);
 							actionBarEquipSlots[0].transform.GetChild(0).GetComponent<DurabilityDisplay>().newDurability((int)tempDurability.x,(int)tempDurability.y);
 							actionBarEquipSlots[1].transform.GetChild(0).GetComponent<DurabilityDisplay>().newDurability((int)tempDurability.x,(int)tempDurability.y);
 
@@ -208,7 +207,7 @@ public class ActionBar : MonoBehaviour {
 							actionBarEquipSlots[0].GetComponent<SpriteRenderer>().sprite=actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite;
 							actionBarSlots[slot-1].GetComponent<SpriteRenderer>().sprite = null;
 							
-							actionBarSlots[slot-1].transform.GetChild(0).GetComponent<DurabilityDisplay>().newDurability(0,1);
+							actionBarSlots[slot-1].transform.GetChild(0).GetComponent<DurabilityDisplay>().newDurability(1,1);
 							actionBarEquipSlots[0].transform.GetChild(0).GetComponent<DurabilityDisplay>().newDurability((int)tempDurability.x,(int)tempDurability.y);
 						}
 					}

@@ -45,6 +45,11 @@ public class Stats : MonoBehaviour {
 			foreach(GameObject spawner in GameObject.FindGameObjectsWithTag("Respawner")){
 				spawner.GetComponent<RespawnEnemies>().removeEnemy(this.gameObject);
 			}
+			foreach(GameObject Ally in GameObject.FindGameObjectsWithTag("Ally")){
+				if(Ally.GetComponent<AllyAI>().returnNearbyTargetsContains(this.gameObject)){
+					Ally.GetComponent<AllyAI>().removeTarget(this.gameObject);
+				}
+			}
 			DestroyImmediate(this.gameObject);
 		}
 		if(stamina<100){

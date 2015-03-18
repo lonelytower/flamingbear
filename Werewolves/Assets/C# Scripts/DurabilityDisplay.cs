@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class DurabilityDisplay : MonoBehaviour {
-	float durability = 0;
+	float durability = 1;
 	float maxDurability = 1;
 
 	// Use this for initialization
@@ -24,7 +24,9 @@ public class DurabilityDisplay : MonoBehaviour {
 		maxDurability = (int)newValues.y;
 	}
 	public void lowerDurability(int amount){
-		durability -= amount;
+		if(maxDurability!=1){
+			durability -= amount;
+		}
 	}
 	public Vector2 returnDurability(){
 		return new Vector2(durability,maxDurability);

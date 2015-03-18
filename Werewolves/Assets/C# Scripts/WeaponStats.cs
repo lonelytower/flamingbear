@@ -14,7 +14,7 @@ public class WeaponStats : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		durability = maxDurability;
+		//durability = maxDurability;
 	}
 	
 	// Update is called once per frame

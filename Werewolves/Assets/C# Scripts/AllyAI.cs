@@ -33,7 +33,7 @@ public class AllyAI : MonoBehaviour {
 			}
 			break;
 		case(2):
-			if(target!=null){
+			if(target.gameObject!=null){
 				foreach(GameObject targetEnemy in nearbyTargets){
 					if(targetEnemy.GetComponent<Stats>().returnThreat() >= currentThreatLevel+currentThreatLevel*0.1f){
 						target = targetEnemy;
@@ -49,6 +49,7 @@ public class AllyAI : MonoBehaviour {
 					}
 				}
 			}
+
 			break;
 		default:
 			break;
@@ -135,17 +136,24 @@ public class AllyAI : MonoBehaviour {
 		default:
 			break;
 		}
+
 	}
 
+	public void removeTarget(GameObject targetToRemove){
+		nearbyTargets.Remove(targetToRemove);
+	}
+	public bool returnNearbyTargetsContains(GameObject entityToCheck){
+		return nearbyTargets.Contains(entityToCheck);
+	}
 	public void setTarget(GameObject newTarget){
 		if(!nearbyTargets.Contains(newTarget)){
 			nearbyTargets.Add(newTarget);
 		}
-		if(nearbyTargets.Count<=1){
+		if(nearbyTargets.Count!=0){
 			target = newTarget;
 			currentThreatLevel = newTarget.GetComponent<Stats>().returnThreat();
 		} else {
-			
+			setPriority(1);
 		}
 	}
 }
