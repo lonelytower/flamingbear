@@ -25,11 +25,11 @@ public class Manager : MonoBehaviour {
 			if(deathDelay <=0){
 				deathDelay = 2;
 				foreach(GameObject slot in GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(false)){
-					if(slot.GetComponent<SpriteRenderer>().sprite!=null){
+					if(slot.GetComponent<SpriteRenderer>().sprite.name!="SlotEmpty"){
 						GameObject droppedItem;
 						droppedItem = GameObject.Instantiate(Resources.Load("Items/" + slot.GetComponent<SpriteRenderer>().sprite.name),newEnemySpawned.transform.position, this.transform.rotation) as GameObject;
 						droppedItem.name = slot.GetComponent<SpriteRenderer>().sprite.name;
-						slot.GetComponent<SpriteRenderer>().sprite = null;
+						slot.GetComponent<SpriteRenderer>().sprite = Resources.Load("Sprites/UI/SlotEmpty" ,typeof(Sprite)) as Sprite;
 					}
 				}
 				gameoverCursed = false;

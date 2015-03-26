@@ -50,6 +50,9 @@ public class Stats : MonoBehaviour {
 					Ally.GetComponent<AllyAI>().removeTarget(this.gameObject);
 				}
 			}
+			foreach(GameObject CampArea in GameObject.FindGameObjectsWithTag("Camp")){
+				CampArea.GetComponent<Camp>().removeEnemyFromList(this.gameObject);
+			}
 			DestroyImmediate(this.gameObject);
 		}
 		if(stamina<100){
@@ -104,7 +107,7 @@ public class Stats : MonoBehaviour {
 				}
 				GameObject.FindGameObjectWithTag("Player").GetComponent<WeaponSystem>().lowerEquippedDurability(1);
 				GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[0].transform.GetChild(0).GetComponent<DurabilityDisplay>().lowerDurability(1);
-				if(GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnEquippedItem(1).GetComponent<SpriteRenderer>().sprite!= null){
+				if(GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnEquippedItem(1).GetComponent<SpriteRenderer>().sprite.name!= "SlotEmpty"){
 					GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[1].transform.GetChild(0).GetComponent<DurabilityDisplay>().lowerDurability(1);
 				}
 				if(GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnActionBarList(true)[0].transform.GetChild(0).GetComponent<DurabilityDisplay>().returnDurability().x<=0){

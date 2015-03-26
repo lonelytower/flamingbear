@@ -33,7 +33,7 @@ public class NPCAI : MonoBehaviour {
 			}
 			if(scrapSlot != null){
 				scrapCount += scrapSlot.GetComponent<SlotBehaviour>().itemQuantity;
-				scrapSlot.GetComponent<SpriteRenderer>().sprite = null;
+				scrapSlot.GetComponent<SpriteRenderer>().sprite.name = "SlotEmpty";
 				scrapSlot.GetComponent<SlotBehaviour>().itemQuantity = 0;
 			}
 			if(scrapCount>=20){

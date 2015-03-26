@@ -37,7 +37,7 @@ public class UI : MonoBehaviour {
 				}
 				toolTipAppear = true;
 			} else if(mouseHit.collider.tag == "UISlots" ){
-				if(mouseHit.collider.GetComponent<SpriteRenderer>().sprite!=null){
+				if(mouseHit.collider.GetComponent<SpriteRenderer>().sprite.name!="SlotEmpty"){
 					itemName = mouseHit.collider.GetComponent<SpriteRenderer>().sprite.name;
 					itemDurability =(int)mouseHit.collider.transform.GetChild(0).GetComponent<DurabilityDisplay>().returnDurability().x;
 					toolTipAppear = true;

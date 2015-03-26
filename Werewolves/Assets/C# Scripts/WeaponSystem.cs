@@ -237,12 +237,12 @@ public class WeaponSystem : MonoBehaviour {
 	}
 
 	public void newEquippedItem(){
-		if(GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnEquippedItem(0).GetComponent<SpriteRenderer>().sprite!=null){
+		if(GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnEquippedItem(0).GetComponent<SpriteRenderer>().sprite.name!= "SlotEmpty"){
 			equippedItem = Resources.Load("Items/" + GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnEquippedItem(0).GetComponent<SpriteRenderer>().sprite.name) as GameObject;
 		} else {
 			equippedItem = null;
 		}
-		if(GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnEquippedItem(1).GetComponent<SpriteRenderer>().sprite!= null){
+		if(GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnEquippedItem(1).GetComponent<SpriteRenderer>().sprite.name!= "SlotEmpty"){
 			equippedItem2 = Resources.Load("Items/" + GameObject.FindGameObjectWithTag("GameController").GetComponent<Manager>().actionBarEntity.returnEquippedItem(1).GetComponent<SpriteRenderer>().sprite.name) as GameObject;
 		} else {
 			equippedItem2 = null;
